@@ -110,7 +110,6 @@
     <h2>📚 Bahirab Study Hub</h2>
     <div class="subtitle">የፈተና ዓይነት ይምረጡ፦</div>
 
-    <!-- Application -->
     <details class="main-category">
         <summary>📱 Freshman App & Modules</summary>
         <div class="card">
@@ -362,7 +361,7 @@
         </details>
     </details>
 
-    <!-- ==================== FINAL EXAMS ==================== -->
+    <!-- FINAL EXAMS -->
     <details class="main-category">
         <summary>🎓 Final Exams (የማጠቃለያ ፈተናዎች)</summary>
 
@@ -732,10 +731,15 @@
                 }
 
                 adController.show().then((result) => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
+                    btn.innerText = "ተልኳል! ወደ ቦቱ ይመለሱ...";
+                    
+                    // ወደ ቦቱ ቀጥታ ሊንክ መላኪያ
                     tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
-                    tg.close();
+                    
+                    // ቦቱ ፋይሉን እንዲልክ በቂ ጊዜ ሰጥቶ መዝጊያ
+                    setTimeout(() => {
+                        tg.close();
+                    }, 1000);
                 }).catch((err) => {
                     btn.innerText = originalText;
                     btn.disabled = false;
