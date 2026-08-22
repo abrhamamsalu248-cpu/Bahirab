@@ -837,7 +837,6 @@
             });
         }
 
-        // ገጹ ሲከፈት ቋንቋ መምረጡን ማረጋገጥ
         window.onload = function() {
             if (!currentLang) {
                 document.getElementById('langModal').style.display = 'flex';
@@ -851,14 +850,20 @@
 
         function watchAd(fileKey) {
             const t = translations[currentLang] || translations.am;
-            const btn = event.target;
-            const originalText = btn.innerText;
-            btn.innerText = t.loading;
-            btn.disabled = true;
+            const btn = window.event ? window.event.target : null;
+            let originalText = "";
+            
+            if (btn) {
+                originalText = btn.innerText;
+                btn.innerText = t.loading;
+                btn.disabled = true;
+            }
 
             if (!tg || !tg.initData) {
-                btn.innerText = originalText;
-                btn.disabled = false;
+                if (btn) {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
                 alert(t.openTgAlert);
                 return;
             }
@@ -869,19 +874,23 @@
                 }
 
                 adController.show().then((result) => {
-                    btn.innerText = t.sent;
+                    if (btn) btn.innerText = t.sent;
                     tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
                     setTimeout(() => {
                         tg.close();
-                    }, 1000);
+                    }, 800);
                 }).catch((err) => {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                    tg.showAlert(t.adErr);
+                    if (btn) btn.innerText = t.sent;
+                    tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
+                    setTimeout(() => {
+                        tg.close();
+                    }, 800);
                 });
             } catch (e) {
-                btn.innerText = originalText;
-                btn.disabled = false;
+                if (btn) {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
                 tg.showAlert(t.loadErr);
             }
         }
