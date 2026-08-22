@@ -62,22 +62,32 @@
         tg.ready();
         tg.expand();
 
-        // Adsgram Ad Controller
-        const adController = window.Adsgram.init({ blockId: "int-test" });
+        // Adsgram Ad Controller (ለሙከራ int-2342 ተተክቷል)
+        let adController;
+        try {
+            adController = window.Adsgram.init({ blockId: "int-2342" });
+        } catch(e) {
+            console.error(e);
+        }
 
         function watchAd(downloadUrl) {
             const btn = event.target;
             const originalText = btn.innerText;
             btn.innerText = "እባክዎ ይጠብቁ...";
 
-            adController.show().then((result) => {
+            if (adController) {
+                adController.show().then((result) => {
+                    btn.innerText = originalText;
+                    tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
+                    tg.openLink(downloadUrl);
+                }).catch((err) => {
+                    btn.innerText = originalText;
+                    tg.showAlert("ማስታወቂያውን በሙሉ ሳያዩ ማውረድ አይችሉም!");
+                });
+            } else {
                 btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
-                tg.openLink(downloadUrl);
-            }).catch((err) => {
-                btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያውን በሙሉ ሳያዩ ማውረድ አይችሉም!");
-            });
+                tg.showAlert("ማስታወቂያው መጫን አልቻለም።");
+            }
         }
     </script>
 </body>
