@@ -45,11 +45,11 @@
     <h2>📚 Bahirab Materials</h2>
     <p>የሚፈልጉትን ማቴሪያል ይምረጡና ማስታወቂያ አይተው ያውርዱ፦</p>
 
-    <!-- ትክክለኛው ማቴሪያል -->
+    <!-- ማቴሪያል 1 -->
     <div class="card">
         <h3>🧠 General Psychology Mid Exam</h3>
         <p>Bahir Dar University • Freshman Course • 681.9 KB PDF</p>
-        <button class="btn" onclick="watchAd('https://t.me/BahirabAcademy/13')">📥 ማስታወቂያ አይተህ አውርድ</button>
+        <button class="btn" onclick="watchAd('get_psychology_exam')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
     <script>
@@ -59,15 +59,15 @@
 
         const adController = window.Adsgram.init({ blockId: "int-44107" });
 
-        function watchAd(downloadUrl) {
+        function watchAd(fileKey) {
             const btn = event.target;
             const originalText = btn.innerText;
             btn.innerText = "እባክዎ ይጠብቁ...";
 
             adController.show().then((result) => {
                 btn.innerText = originalText;
-                // ማስታወቂያው ሲያልቅ ቀጥታ ወደ ቴሌግራም ፖስቱ ይወስደዋል
-                tg.openTelegramLink(downloadUrl);
+                // ዳታውን ወደ ቦቱ ልኮ Mini App-ኡን ይዘጋዋል
+                tg.sendData(fileKey);
             }).catch((err) => {
                 btn.innerText = originalText;
                 tg.showAlert("ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!");
