@@ -31,7 +31,7 @@ def track_user_info(user):
     """የተማሪውን ID፣ ስምና ዩዘርኔም መዝግቦ የሚይዝ"""
     try:
         user_id = str(user.id)
-        name = (user.first_name or "Student").replace("|", "-")
+        name = (user.first_name or "Student").replace("|", "-").replace("\n", " ")
         username = f"@{user.username}" if user.username else "No Username"
         
         registered_ids = set()
@@ -168,7 +168,7 @@ def get_lang_selection_keyboard():
     )
     return keyboard
 
-# --- STATS COMMAND WITH DETAILED USER ID ---
+# --- STATS COMMAND WITHOUT PARSE ERROR ---
 @bot.message_handler(commands=['stats', 'States', 'stat'])
 def handle_stats(message):
     try:
@@ -181,19 +181,20 @@ def handle_stats(message):
             parts = u.split(" | ")
             if len(parts) >= 3:
                 u_id, u_name, u_user = parts[0], parts[1], parts[2]
-                lines.append(f"• **ID:** `{u_id}` | 👤 {u_name} ({u_user})")
+                lines.append(f"• ID: {u_id} | 👤 {u_name} ({u_user})")
             else:
                 lines.append(f"• {u}")
                 
         user_list_str = "\n".join(lines) if lines else "ምንም ተጠቃሚ የለም"
         
         stats_msg = (
-            "📊 **Bahirab Bot Analytics**\n\n"
-            f"👥 **ጠቅላላ ተማሪዎች:** `{total_u}`\n"
-            f"📥 **የተወረዱ ፈተናዎች:** `{total_downloads}` ጊዜ\n\n"
-            f"📝 **የቅርብ ተጠቃሚዎች ዝርዝር (ID ጨምሮ)፦**\n{user_list_str}"
+            "📊 Bahirab Bot Analytics\n\n"
+            f"👥 ጠቅላላ ተማሪዎች: {total_u}\n"
+            f"📥 የተወረዱ ፈተናዎች: {total_downloads} ጊዜ\n\n"
+            f"📝 የቅርብ ተጠቃሚዎች ዝርዝር (ID ጨምሮ)፦\n{user_list_str}"
         )
-        bot.send_message(message.chat.id, stats_msg, parse_mode="Markdown")
+        # Plain text ሆኖ እንዲላክ parse_mode አልተጨመረበትም
+        bot.send_message(message.chat.id, stats_msg)
     except Exception as e:
         bot.send_message(message.chat.id, f"Stats Error: {e}")
 
@@ -212,30 +213,28 @@ def handle_language_choice(call):
     if call.data == "lang_am":
         user_languages[chat_id] = "am"
         text = (
-            "✅ **ቋንቋ ወደ አማርኛ ተቀይሯል!**\n\n"
-            "እንኳን ወደ **Bahirab Study Hub** በደህና መጣችሁ።\n"
+            "✅ ቋንቋ ወደ አማርኛ ተቀይሯል!\n\n"
+            "እንኳን ወደ Bahirab Study Hub በደህና መጣችሁ።\n"
             "የተዘጋጁ የትምህርት ፈተናዎችንና ማቴሪያሎችን ለማግኘት ከታች ያለውን በተን ተጫኑ፦"
         )
         bot.edit_message_text(
             chat_id=chat_id,
             message_id=call.message.message_id,
             text=text,
-            reply_markup=get_main_keyboard("am"),
-            parse_mode="Markdown"
+            reply_markup=get_main_keyboard("am")
         )
     elif call.data == "lang_en":
         user_languages[chat_id] = "en"
         text = (
-            "✅ **Language set to English!**\n\n"
-            "Welcome to **Bahirab Study Hub**.\n"
+            "✅ Language set to English!\n\n"
+            "Welcome to Bahirab Study Hub.\n"
             "Click the button below to access study materials and exams:"
         )
         bot.edit_message_text(
             chat_id=chat_id,
             message_id=call.message.message_id,
             text=text,
-            reply_markup=get_main_keyboard("en"),
-            parse_mode="Markdown"
+            reply_markup=get_main_keyboard("en")
         )
 
 @bot.message_handler(commands=['start'])
@@ -259,19 +258,19 @@ def handle_start(message):
             link_keyboard.add(InlineKeyboardButton(text=open_btn_text, url=post_url))
             link_keyboard.add(InlineKeyboardButton(text=more_btn_text, web_app=WebAppInfo(url=WEB_APP_URL)))
             msg = (
-                f"📖 **{exam['name']}**\n\n🔗 ፈተናውን ለማግኘት ከታች ያለውን ሊንክ ይጫኑ፦\n👉 {post_url}"
+                f"📖 {exam['name']}\n\n🔗 ፈተናውን ለማግኘት ከታች ያለውን ሊንክ ይጫኑ፦\n👉 {post_url}"
                 if lang == "am" else
-                f"📖 **{exam['name']}**\n\n🔗 Click the link below to access the exam:\n👉 {post_url}"
+                f"📖 {exam['name']}\n\n🔗 Click the link below to access the exam:\n👉 {post_url}"
             )
-            bot.send_message(chat_id, msg, reply_markup=link_keyboard, parse_mode="Markdown")
+            bot.send_message(chat_id, msg, reply_markup=link_keyboard)
             return
 
         file_notice = (
-            f"📥 **{exam['name']}**\n\n✨ ፈተናው ከታች ተልኮላችኋል 👇"
+            f"📥 {exam['name']}\n\n✨ ፈተናው ከታች ተልኮላችኋል 👇"
             if lang == "am" else
-            f"📥 **{exam['name']}**\n\n✨ Your exam has been sent below 👇"
+            f"📥 {exam['name']}\n\n✨ Your exam has been sent below 👇"
         )
-        bot.send_message(chat_id, file_notice, parse_mode="Markdown")
+        bot.send_message(chat_id, file_notice)
         try:
             bot.copy_message(
                 chat_id=chat_id,
