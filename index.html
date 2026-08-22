@@ -14,11 +14,69 @@
             padding: 14px;
             margin: 0;
         }
+
+        /* ቋንቋ መምረጫ ሞዳል (Popup) */
+        #langModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-box {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 24px 20px;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            color: #111;
+        }
+        .lang-btn {
+            background: #0088cc;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .lang-switch {
+            background: #e3edf5;
+            color: #0088cc;
+            border: 1px solid #0088cc;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         h2 {
             color: #0088cc;
             text-align: center;
-            margin-top: 5px;
-            margin-bottom: 6px;
+            margin: 0;
             font-size: 20px;
         }
         .subtitle {
@@ -107,39 +165,52 @@
 </head>
 <body>
 
-    <h2>📚 Bahirab Study Hub</h2>
-    <div class="subtitle">የፈተና ዓይነት ይምረጡ፦</div>
+    <!-- Language Selector Popup -->
+    <div id="langModal">
+        <div class="modal-box">
+            <h3>🌐 Select Language / ቋንቋ ይምረጡ</h3>
+            <button class="lang-btn" onclick="setLanguage('am')">🇪🇹 አማርኛ (Amharic)</button>
+            <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
+        </div>
+    </div>
 
-    <!-- Application -->
+    <!-- Header -->
+    <div class="top-bar">
+        <h2 id="hubTitle">📚 Bahirab Study Hub</h2>
+        <button class="lang-switch" onclick="openLangModal()">🌐 ቋንቋ / Lang</button>
+    </div>
+    <div class="subtitle" id="hubSubtitle">የፈተና ዓይነት ይምረጡ፦</div>
+
+    <!-- 0. Application -->
     <details class="main-category">
-        <summary>📱 Freshman App & Modules</summary>
+        <summary id="appCatTitle">📱 Freshman App & Modules</summary>
         <div class="card">
             <h4>Freshman Modules and Exams Application</h4>
             <p>All-in-one Android Application</p>
-            <button class="btn" onclick="watchAd('freshman_app')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+            <button class="btn btn-ad" onclick="watchAd('freshman_app')">📥 ማስታወቂያ አይተህ ተቀበል</button>
         </div>
     </details>
 
-    <!-- MID EXAMS -->
+    <!-- ==================== MID EXAMS ==================== -->
     <details class="main-category" open>
-        <summary>📝 Mid Exams (የአጋማሽ ፈተናዎች)</summary>
+        <summary id="midCatTitle">📝 Mid Exams (የአጋማሽ ፈተናዎች)</summary>
 
         <details class="course-details">
             <summary>💡 Logic & Critical Thinking</summary>
             <div class="card">
                 <h4>Logic Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('logic_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('logic_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Critical Thinking Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('critical_thinking_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('critical_thinking_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -148,12 +219,12 @@
             <div class="card">
                 <h4>Economics Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('econ_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Economics Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('econ_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -162,27 +233,27 @@
             <div class="card">
                 <h4>Geography Mid Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn" onclick="watchAd('geography_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('geography_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2016 (Bahirab)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('geography_mid_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_mid_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2016 (Other Sem.)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('geography_mid_other')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_mid_other')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('geography_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -191,12 +262,12 @@
             <div class="card">
                 <h4>Global Trend Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('global_trend_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_trend_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Global Trend Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('global_trend_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_trend_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -205,22 +276,22 @@
             <div class="card">
                 <h4>History Mid Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('history_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('history_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History Mid Exam (Bahirab)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('history_mid_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_mid_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('history_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -229,17 +300,17 @@
             <div class="card">
                 <h4>Civics Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('civics_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('civics_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Moral and Civic Education Mid 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('moral_civic_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('moral_civic_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Moral and Civic Mid Exam (Bahirab Set)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('moral_civic_mid_323')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('moral_civic_mid_323')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -248,12 +319,12 @@
             <div class="card">
                 <h4>Anthropology Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('anthro_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('anthro_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Anthropology Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('anthro_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('anthro_mid_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -262,12 +333,12 @@
             <div class="card">
                 <h4>Emerging Technology Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('emerging_tech_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Emerging Technology Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('emerging_tech_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -276,17 +347,17 @@
             <div class="card">
                 <h4>Inclusiveness Mid Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn" onclick="watchAd('inclusiveness_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('inclusiveness_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>General Psychology Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('psychology_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('psychology_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>General Psychology Material / Exam</h4>
                 <p>Bahir Dar University • Course Material</p>
-                <button class="btn" onclick="watchAd('psychology_330')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('psychology_330')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -295,17 +366,17 @@
             <div class="card">
                 <h4>Communication English Skills Two Mid 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('comm_english_two_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_english_two_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication English Skills Two Mid</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('comm_english_two_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_english_two_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication English Skills Two Mid 2016/17</h4>
                 <p>Bahir Dar University • Year: 2016/17</p>
-                <button class="btn" onclick="watchAd('comm_english_two_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_english_two_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -314,22 +385,22 @@
             <div class="card">
                 <h4>Applied Mathematics Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('applied_math_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('applied_math_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics For Social Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('math_social_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_social_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics For Social Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('math_social_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_social_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics Mid Exam For Social</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('math_social_mid_325')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_social_mid_325')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -338,7 +409,7 @@
             <div class="card">
                 <h4>Entrepreneurship Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('entrepreneurship_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('entrepreneurship_mid_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -347,71 +418,71 @@
             <div class="card">
                 <h4>General Chemistry Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('chemistry_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('chemistry_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>General Physics Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('physics_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('physics_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>C++ BDU Mid Exam</h4>
                 <p>Bahir Dar University • Programming Course</p>
-                <button class="btn" onclick="watchAd('cpp_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('cpp_mid')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
     </details>
 
-    <!-- FINAL EXAMS -->
+    <!-- ==================== FINAL EXAMS ==================== -->
     <details class="main-category">
-        <summary>🎓 Final Exams (የማጠቃለያ ፈተናዎች)</summary>
+        <summary id="finalCatTitle">🎓 Final Exams (የማጠቃለያ ፈተናዎች)</summary>
 
         <details class="course-details">
             <summary>💡 Logic & Critical Thinking</summary>
             <div class="card">
                 <h4>Logic Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('logic_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn" onclick="watchAd('logic_final_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2021</h4>
                 <p>Bahir Dar University • Year: 2021</p>
-                <button class="btn" onclick="watchAd('logic_final_2021')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_2021')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam (Bahirab Set 1)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('logic_final_219')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_219')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('logic_final_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam (Bahirab Set 2)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('logic_final_802')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_802')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2017 (Set 1)</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('logic_final_808')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_808')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2017 (Other Sem.)</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('logic_final_809')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_809')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2017 (Set 2)</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('logic_final_818')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('logic_final_818')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -420,27 +491,27 @@
             <div class="card">
                 <h4>Economics Final Exam 2013</h4>
                 <p>Bahir Dar University • Year: 2013</p>
-                <button class="btn" onclick="watchAd('econ_final_2013')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_final_2013')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Economics Final Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('econ_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Economics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('econ_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Economics Final Exam 2016 (Set 2)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('econ_final_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_final_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Economics Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('econ_final_814')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('econ_final_814')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -449,27 +520,27 @@
             <div class="card">
                 <h4>Geography Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('geography_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('geography_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Final Exam (Bahirab Set 1)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('geography_final_204')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_final_204')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Final Exam (Bahirab Set 2)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('geography_final_213')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_final_213')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Geography Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('geography_final_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('geography_final_2017')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -478,27 +549,27 @@
             <div class="card">
                 <h4>Global Trend Final Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('global_trend_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_trend_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Global Trend Final Exam 2015 (Set 2)</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('global_trend_2015_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_trend_2015_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Global Final Exam (Set 1)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('global_final_176')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_final_176')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Global Final Exam (Set 2)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('global_final_179')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_final_179')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Global Trend Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('global_trend_final_790')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('global_trend_final_790')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -507,22 +578,22 @@
             <div class="card">
                 <h4>History Final Exam 2015 (Bahirab)</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('history_final_2015_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_final_2015_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('history_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History Final Exam (Bahirab Academy)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('history_final_academy')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_final_academy')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>History 2016 Final Exam (Set 2)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('history_final_2016_2')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('history_final_2016_2')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -531,27 +602,27 @@
             <div class="card">
                 <h4>Civics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('civics_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('civics_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Civics Final Exam 2023</h4>
                 <p>Bahir Dar University • Year: 2023 G.C</p>
-                <button class="btn" onclick="watchAd('civics_final_2023')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('civics_final_2023')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Civics Final Exam (Set 3)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('civics_final_187')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('civics_final_187')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Civics Final Exam (Set 4)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('civics_final_192')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('civics_final_192')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Moral & Civic Education Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('moral_civic_final_193')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('moral_civic_final_193')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -560,17 +631,17 @@
             <div class="card">
                 <h4>Anthropology Final Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('anthro_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('anthro_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Anthropology Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('anthro_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('anthro_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Anthropology Final Exam 2016 (Bahirab)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('anthro_final_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('anthro_final_2016_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -579,22 +650,22 @@
             <div class="card">
                 <h4>Emerging Technology Final Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn" onclick="watchAd('emerging_tech_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_2014')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Emerging Technology Final Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('emerging_tech_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Emerging Technology Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('emerging_tech_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Emerging Technology Final (Bahirab)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('emerging_tech_203')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('emerging_tech_203')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -603,17 +674,17 @@
             <div class="card">
                 <h4>General Psychology Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('psychology_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('psychology_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>General Psychology Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('psychology_final_793')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('psychology_final_793')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>General Psychology Final (Other Sem.)</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('psychology_final_794')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('psychology_final_794')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -622,27 +693,27 @@
             <div class="card">
                 <h4>Communication Skills English Final</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('comm_skills_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_skills_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication English Skills Two Final</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('comm_english_two_final_406')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_english_two_final_406')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication Skills One English Final</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('comm_skills_one_822')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_skills_one_822')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication Skills One Final 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('comm_skills_one_823')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_skills_one_823')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Communication Skills One Final 2017 (Set 2)</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('comm_skills_one_827')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('comm_skills_one_827')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -651,27 +722,27 @@
             <div class="card">
                 <h4>Applied Mathematics One Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('applied_math_one_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('applied_math_one_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics For Natural Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('math_natural_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_natural_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('math_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Applied Mathematics One Final (Bahirab)</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('applied_math_one_final_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('applied_math_one_final_b')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Mathematics For Social Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('math_social_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('math_social_final')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -680,17 +751,17 @@
             <div class="card">
                 <h4>Entrepreneurship Final Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn" onclick="watchAd('entrepreneurship_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('entrepreneurship_final_2015')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Entrepreneurship Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn" onclick="watchAd('entrepreneurship_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('entrepreneurship_final_2016')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
             <div class="card">
                 <h4>Entrepreneurship Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn" onclick="watchAd('entrepreneurship_final_785')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('entrepreneurship_final_785')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
 
@@ -699,7 +770,7 @@
             <div class="card">
                 <h4>General Physics Final Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
-                <button class="btn" onclick="watchAd('physics_final_224')">📥 ማስታወቂያ አይተህ ተቀበል</button>
+                <button class="btn btn-ad" onclick="watchAd('physics_final_224')">📥 ማስታወቂያ አይተህ ተቀበል</button>
             </div>
         </details>
     </details>
@@ -711,18 +782,84 @@
             tg.expand();
         }
 
+        let currentLang = localStorage.getItem('bahirab_lang') || null;
+
+        const translations = {
+            am: {
+                title: "📚 Bahirab Study Hub",
+                subtitle: "የፈተና ዓይነት ይምረጡ፦",
+                appCat: "📱 Freshman App & Modules",
+                midCat: "📝 Mid Exams (የአጋማሽ ፈተናዎች)",
+                finalCat: "🎓 Final Exams (የማጠቃለያ ፈተናዎች)",
+                btnAd: "📥 ማስታወቂያ አይተህ ተቀበል",
+                loading: "ማስታወቂያ በመጫን ላይ...",
+                sent: "ተልኳል! ወደ ቦቱ ይመለሱ...",
+                adErr: "ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!",
+                loadErr: "ማስታወቂያውን መጫን አልተቻለም። እባክዎ አፑን ዘግተው እንደገና ይክፈቱት።",
+                openTgAlert: "እባክዎ መተግበሪያውን በቴሌግራም ቦት ውስጥ ባለው በተን ብቻ ይክፈቱት!"
+            },
+            en: {
+                title: "📚 Bahirab Study Hub",
+                subtitle: "Select exam category:",
+                appCat: "📱 Freshman App & Modules",
+                midCat: "📝 Mid Exams",
+                finalCat: "🎓 Final Exams",
+                btnAd: "📥 Watch Ad to Get File",
+                loading: "Loading Ad...",
+                sent: "Sent! Return to bot...",
+                adErr: "You must watch the ad to receive the file!",
+                loadErr: "Failed to load the ad. Please restart the app.",
+                openTgAlert: "Please open this app from inside the Telegram Bot!"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('bahirab_lang', lang);
+            document.getElementById('langModal').style.display = 'none';
+            applyLanguage();
+        }
+
+        function openLangModal() {
+            document.getElementById('langModal').style.display = 'flex';
+        }
+
+        function applyLanguage() {
+            const t = translations[currentLang] || translations.am;
+            document.getElementById('hubTitle').innerText = t.title;
+            document.getElementById('hubSubtitle').innerText = t.subtitle;
+            document.getElementById('appCatTitle').innerText = t.appCat;
+            document.getElementById('midCatTitle').innerText = t.midCat;
+            document.getElementById('finalCatTitle').innerText = t.finalCat;
+
+            document.querySelectorAll('.btn-ad').forEach(btn => {
+                btn.innerText = t.btnAd;
+            });
+        }
+
+        // ገጹ ሲከፈት ቋንቋ መምረጡን ማረጋገጥ
+        window.onload = function() {
+            if (!currentLang) {
+                document.getElementById('langModal').style.display = 'flex';
+            } else {
+                document.getElementById('langModal').style.display = 'none';
+                applyLanguage();
+            }
+        };
+
         let adController = null;
 
         function watchAd(fileKey) {
+            const t = translations[currentLang] || translations.am;
             const btn = event.target;
             const originalText = btn.innerText;
-            btn.innerText = "ማስታወቂያ በመጫን ላይ...";
+            btn.innerText = t.loading;
             btn.disabled = true;
 
             if (!tg || !tg.initData) {
                 btn.innerText = originalText;
                 btn.disabled = false;
-                alert("እባክዎ መተግበሪያውን በቴሌግራም ቦት ውስጥ ባለው በተን ብቻ ይክፈቱት!");
+                alert(t.openTgAlert);
                 return;
             }
 
@@ -732,7 +869,7 @@
                 }
 
                 adController.show().then((result) => {
-                    btn.innerText = "ተልኳል! ወደ ቦቱ ይመለሱ...";
+                    btn.innerText = t.sent;
                     tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
                     setTimeout(() => {
                         tg.close();
@@ -740,12 +877,12 @@
                 }).catch((err) => {
                     btn.innerText = originalText;
                     btn.disabled = false;
-                    tg.showAlert("ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!");
+                    tg.showAlert(t.adErr);
                 });
             } catch (e) {
                 btn.innerText = originalText;
                 btn.disabled = false;
-                tg.showAlert("ማስታወቂያውን መጫን አልተቻለም። እባክዎ አፑን ዘግተው እንደገና ይክፈቱት።");
+                tg.showAlert(t.loadErr);
             }
         }
     </script>
