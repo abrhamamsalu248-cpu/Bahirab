@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bahirab Materials</title>
-    <!-- Telegram WebApp & Adsgram SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <style>
@@ -45,11 +44,10 @@
     <h2>📚 Bahirab Materials</h2>
     <p>የሚፈልጉትን ማቴሪያል ይምረጡና ማስታወቂያ አይተው ያውርዱ፦</p>
 
-    <!-- ማቴሪያል 1 -->
     <div class="card">
         <h3>🧠 General Psychology Mid Exam</h3>
         <p>Bahir Dar University • Freshman Course • 681.9 KB PDF</p>
-        <button class="btn" onclick="watchAd('get_psychology_exam')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+        <button class="btn" onclick="watchAd('psychology')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
     <script>
@@ -66,8 +64,9 @@
 
             adController.show().then((result) => {
                 btn.innerText = originalText;
-                // ዳታውን ወደ ቦቱ ልኮ Mini App-ኡን ይዘጋዋል
-                tg.sendData(fileKey);
+                // ማስታወቂያው ሲያልቅ ቀጥታ ወደ ቦቱ ይልከዋል፤ ቦቱም ፋይሉን ያቀብለዋል
+                tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
+                tg.close();
             }).catch((err) => {
                 btn.innerText = originalText;
                 tg.showAlert("ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!");
