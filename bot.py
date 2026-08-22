@@ -1,5 +1,3 @@
-
-cat << 'EOF' > bot.py
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
@@ -175,7 +173,6 @@ def handle_start(message):
     text_parts = message.text.split()
     lang = user_languages.get(chat_id, "am")
     
-    # ተጠቃሚው ማስታወቂያ አይቶ ሲመለስ
     if len(text_parts) > 1 and text_parts[1] in EXAMS:
         exam = EXAMS[text_parts[1]]
         
@@ -217,7 +214,6 @@ def handle_start(message):
             )
         return
 
-    # መደበኛ /start
     bot.reply_to(
         message,
         f"ሰላም {message.from_user.first_name}!\n\n"
@@ -227,5 +223,3 @@ def handle_start(message):
 
 print("Bahirab Bot ዝግጁ ነው...")
 bot.infinity_polling()
-EOF
-python bot.py
