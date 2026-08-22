@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bahirab Materials</title>
-    <!-- Telegram & Adsgram Scripts -->
+    <!-- Telegram WebApp & Adsgram SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <style>
@@ -62,32 +62,22 @@
         tg.ready();
         tg.expand();
 
-        // Adsgram Ad Controller (ለሙከራ int-2342 ተተክቷል)
-        let adController;
-        try {
-            adController = window.Adsgram.init({ blockId: "int-2342" });
-        } catch(e) {
-            console.error(e);
-        }
+        // የራስህ ትክክለኛ Adsgram Block ID
+        const adController = window.Adsgram.init({ blockId: "int-44107" });
 
         function watchAd(downloadUrl) {
             const btn = event.target;
             const originalText = btn.innerText;
             btn.innerText = "እባክዎ ይጠብቁ...";
 
-            if (adController) {
-                adController.show().then((result) => {
-                    btn.innerText = originalText;
-                    tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
-                    tg.openLink(downloadUrl);
-                }).catch((err) => {
-                    btn.innerText = originalText;
-                    tg.showAlert("ማስታወቂያውን በሙሉ ሳያዩ ማውረድ አይችሉም!");
-                });
-            } else {
+            adController.show().then((result) => {
                 btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያው መጫን አልቻለም።");
-            }
+                tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
+                tg.openLink(downloadUrl);
+            }).catch((err) => {
+                btn.innerText = originalText;
+                tg.showAlert("ማስታወቂያው አልተጠናቀቀም ወይም አልተገኘም!");
+            });
         }
     </script>
 </body>
