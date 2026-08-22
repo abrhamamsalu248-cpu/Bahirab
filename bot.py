@@ -1,7 +1,7 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
-BOT_TOKEN = "8900597642:AAEVJ6KV3Y9f4hAC4zwOIh-HarB79jyh6Jc"
+BOT_TOKEN = "8900597642:AAEZbyEeaXmE7STzjq2hAdd5LrE4kW-dt0k"
 bot = telebot.TeleBot(BOT_TOKEN)
 
 CHANNEL_ID = "@BahirabAcademy"
