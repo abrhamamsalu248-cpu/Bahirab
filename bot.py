@@ -1,6 +1,21 @@
+import os
+import threading
+from flask import Flask
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
+# --- Render Web Service Port Fix ---
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bahirab Bot is Running 24/7!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+# --- TELEGRAM BOT CODE ---
 BOT_TOKEN = "8900597642:AAEZbyEeaXmE7STzjq2hAdd5LrE4kW-dt0k"
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -111,7 +126,6 @@ EXAMS = {
 def get_main_keyboard(lang="am"):
     btn_text = "📚 ማቴሪያሎችን ክፈቱ (Open App)" if lang == "am" else "📚 Open Study Hub"
     lang_btn_text = "🌐 ቋንቋ ቀይሩ (Change Language)" if lang == "am" else "🌐 Change Language"
-    
     keyboard = InlineKeyboardMarkup()
     keyboard.add(InlineKeyboardButton(text=btn_text, web_app=WebAppInfo(url=WEB_APP_URL)))
     keyboard.add(InlineKeyboardButton(text=lang_btn_text, callback_data="change_lang"))
@@ -128,7 +142,6 @@ def get_lang_selection_keyboard():
 @bot.callback_query_handler(func=lambda call: call.data.startswith("lang_") or call.data == "change_lang")
 def handle_language_choice(call):
     chat_id = call.message.chat.id
-    
     if call.data == "change_lang":
         bot.edit_message_text(
             chat_id=chat_id,
@@ -175,16 +188,13 @@ def handle_start(message):
     
     if len(text_parts) > 1 and text_parts[1] in EXAMS:
         exam = EXAMS[text_parts[1]]
-        
         if exam["type"] == "link":
             post_url = f"https://t.me/{CHANNEL_USERNAME}/{exam['msg_id']}"
             link_keyboard = InlineKeyboardMarkup()
             open_btn_text = "📖 ፈተናውን በቻናሉ ክፈቱ" if lang == "am" else "📖 Open in Channel"
             more_btn_text = "📚 ተጨማሪ ማቴሪያሎች" if lang == "am" else "📚 More Materials"
-            
             link_keyboard.add(InlineKeyboardButton(text=open_btn_text, url=post_url))
             link_keyboard.add(InlineKeyboardButton(text=more_btn_text, web_app=WebAppInfo(url=WEB_APP_URL)))
-            
             msg = (
                 f"✅ ማስታወቂያውን ስላያችሁ እናመሰግናለን!\n\n📌 **{exam['name']}**\nፈተናውን ለማየት ሊንኩን ይጫኑ፦\n🔗 {post_url}"
                 if lang == "am" else
@@ -207,11 +217,7 @@ def handle_start(message):
                 reply_markup=get_main_keyboard(lang)
             )
         except Exception as e:
-            bot.send_message(
-                chat_id, 
-                f"Error: {e}",
-                reply_markup=get_main_keyboard(lang)
-            )
+            bot.send_message(chat_id, f"Error: {e}", reply_markup=get_main_keyboard(lang))
         return
 
     bot.reply_to(
@@ -221,5 +227,9 @@ def handle_start(message):
         reply_markup=get_lang_selection_keyboard()
     )
 
-print("Bahirab Bot ዝግጁ ነው...")
-bot.infinity_polling()
+if __name__ == '__main__':
+    # 1. ዌብ ሰርቨሩን በ Background ማብራት (Render እንዳይዘገይ)
+    threading.Thread(target=run_flask).start()
+    # 2. ቦቱን ማስጀመር
+    print("Bahirab Bot ዝግጁ ነው...")
+    bot.infinity_polling()
