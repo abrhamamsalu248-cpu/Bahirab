@@ -23,8 +23,8 @@
             margin-bottom: 15px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .card h3 { margin: 0 0 8px 0; font-size: 17px; color: #111; }
-        .card p { color: #666; font-size: 13px; margin-bottom: 12px; }
+        .card h3 { margin: 0 0 8px 0; font-size: 16px; color: #111; text-align: left; }
+        .card p { color: #666; font-size: 13px; margin-bottom: 12px; text-align: left; }
         .btn {
             background-color: #0088cc;
             color: white;
@@ -33,7 +33,7 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             display: block;
         }
@@ -41,13 +41,56 @@
 </head>
 <body>
 
-    <h2>📚 Bahirab Materials</h2>
-    <p>የሚፈልጉትን ማቴሪያል ይምረጡና ማስታወቂያ አይተው ያውርዱ፦</p>
+    <h2>📚 Bahirab Study Materials</h2>
+    <p>የሚፈልጉትን ፈተና ይምረጡና ማስታወቂያ አይተው በቦቱ ተቀበሉ፦</p>
 
+    <!-- 1. General Psychology -->
     <div class="card">
         <h3>🧠 General Psychology Mid Exam</h3>
-        <p>Bahir Dar University • Freshman Course • 681.9 KB PDF</p>
+        <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('psychology')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 2. Global Trend -->
+    <div class="card">
+        <h3>🌍 Global Trend Final Exam 2015</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('global_trend')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 3. History -->
+    <div class="card">
+        <h3>📜 History Mid Exam 2015</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('history')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 4. Geography -->
+    <div class="card">
+        <h3>🗺️ Geography Final Exam</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('geography')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 5. Emerging Technology -->
+    <div class="card">
+        <h3>💻 Emerging Technology Mid Exam</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('emerging_tech')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 6. Civics -->
+    <div class="card">
+        <h3>⚖️ Civics Mid Exam</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('civics')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
+    </div>
+
+    <!-- 7. Logic -->
+    <div class="card">
+        <h3>💡 Logic Final Exam</h3>
+        <p>Bahir Dar University • Freshman Course</p>
+        <button class="btn" onclick="watchAd('logic')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
     <script>
@@ -64,7 +107,6 @@
 
             adController.show().then((result) => {
                 btn.innerText = originalText;
-                // ማስታወቂያው ሲያልቅ ቀጥታ ወደ ቦቱ ይልከዋል፤ ቦቱም ፋይሉን ያቀብለዋል
                 tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
                 tg.close();
             }).catch((err) => {
