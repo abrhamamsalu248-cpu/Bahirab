@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bahirab Materials</title>
+    <!-- Telegram & Adsgram SDKs -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,27 +37,48 @@
             font-size: 15px;
             font-weight: bold;
             display: block;
-            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
     <h2>📚 Bahirab Materials</h2>
-    <p>የሚፈልጉትን ማቴሪያል ይምረጡና ያውርዱ፦</p>
+    <p>የሚፈልጉትን ማቴሪያል ይምረጡና ማስታወቂያ አይተው ያውርዱ፦</p>
 
     <div class="card">
         <h3>📖 Macroeconomics Summary Notes</h3>
         <p>መጠን፡ 2.8 MB • Year 2 / Semester 1</p>
-        <button class="btn" onclick="alert('ማቴሪያሉ በቅርቡ ይወርዳል!')">📥 አውርድ</button>
+        <button class="btn" onclick="watchAdAndDownload('https://t.me/')">📥 ማስታወቂያ አይተህ አውርድ</button>
     </div>
 
     <div class="card">
         <h3>📝 Econometrics Mid Exam & Answers</h3>
         <p>መጠን፡ 1.5 MB • Exam Questions</p>
-        <button class="btn" onclick="alert('ማቴሪያሉ በቅርቡ ይወርዳል!')">📥 አውርድ</button>
+        <button class="btn" onclick="watchAdAndDownload('https://t.me/')">📥 ማስታወቂያ አይተህ አውርድ</button>
     </div>
 
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // የሙከራ Ad Block ID (ወደፊት ከ Adsgram በሚሰጥህ እውነተኛ ቁጥር ትተካዋለህ)
+        const adController = window.Adsgram.init({ blockId: "int-test" });
+
+        function watchAdAndDownload(downloadLink) {
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "እባክዎ ይጠብቁ...";
+
+            adController.show().then((result) => {
+                btn.innerText = originalText;
+                tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
+                tg.openLink(downloadLink);
+            }).catch((state) => {
+                btn.innerText = originalText;
+                tg.showAlert("ማስታወቂያውን በሙሉ ሳያዩ ማውረድ አይችሉም!");
+            });
+        }
+    </script>
 </body>
 </html>
-
