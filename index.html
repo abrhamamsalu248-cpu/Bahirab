@@ -15,7 +15,7 @@
             margin: 0;
             text-align: center;
         }
-        h2 { color: #0088cc; }
+        h2 { color: #0088cc; margin-top: 10px; }
         .card {
             background: #ffffff;
             border-radius: 12px;
@@ -37,6 +37,10 @@
             font-weight: bold;
             display: block;
         }
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -44,42 +48,49 @@
     <h2>📚 Bahirab Study Materials</h2>
     <p>የሚፈልጉትን ፈተና ይምረጡና ማስታወቂያ አይተው በቦቱ ተቀበሉ፦</p>
 
+    <!-- 1. General Psychology -->
     <div class="card">
         <h3>🧠 General Psychology Mid Exam</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('psychology')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 2. Global Trend -->
     <div class="card">
         <h3>🌍 Global Trend Final Exam 2015</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('global_trend')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 3. History -->
     <div class="card">
         <h3>📜 History Mid Exam 2015</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('history')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 4. Geography -->
     <div class="card">
         <h3>🗺️ Geography Final Exam</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('geography')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 5. Emerging Technology -->
     <div class="card">
         <h3>💻 Emerging Technology Mid Exam</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('emerging_tech')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 6. Civics -->
     <div class="card">
         <h3>⚖️ Civics Mid Exam</h3>
         <p>Bahir Dar University • Freshman Course</p>
         <button class="btn" onclick="watchAd('civics')">📥 ማስታወቂያ አይተህ በቦቱ ተቀበል</button>
     </div>
 
+    <!-- 7. Logic -->
     <div class="card">
         <h3>💡 Logic Final Exam</h3>
         <p>Bahir Dar University • Freshman Course</p>
@@ -87,38 +98,48 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
         let adController = null;
-
-        function getAdController() {
-            if (!adController && window.Adsgram) {
-                adController = window.Adsgram.init({ blockId: "int-44107" });
-            }
-            return adController;
-        }
 
         function watchAd(fileKey) {
             const btn = event.target;
             const originalText = btn.innerText;
             btn.innerText = "እባክዎ ይጠብቁ...";
+            btn.disabled = true;
 
-            const controller = getAdController();
+            if (!tg || !tg.initData) {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                alert("እባክዎ መተግበሪያውን በቴሌግራም ቦት ውስጥ ባለው በተን ብቻ ይክፈቱት!");
+                return;
+            }
 
-            if (controller) {
-                controller.show().then((result) => {
+            try {
+                if (!adController) {
+                    adController = window.Adsgram.init({ blockId: "int-44107" });
+                }
+
+                adController.show().then((result) => {
                     btn.innerText = originalText;
+                    btn.disabled = false;
                     tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
                     tg.close();
                 }).catch((err) => {
                     btn.innerText = originalText;
+                    btn.disabled = false;
+                    console.error(err);
                     tg.showAlert("ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!");
                 });
-            } else {
+            } catch (e) {
                 btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያውን መጫን አልተቻለም። እባክዎ ገጹን Reload ያድርጉት።");
+                btn.disabled = false;
+                console.error(e);
+                tg.showAlert("ማስታወቂያውን መጫን አልተቻለም። እባክዎ አፑን ዘግተው እንደገና ይክፈቱት።");
             }
         }
     </script>
