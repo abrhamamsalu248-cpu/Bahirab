@@ -23,7 +23,6 @@ CHANNEL_ID = "@BahirabAcademy"
 CHANNEL_USERNAME = "BahirabAcademy"
 WEB_APP_URL = "https://abrhamamsalu248-cpu.github.io/Bahirab/"
 
-# --- User Tracking & Analytics ---
 USERS_FILE = "users_detailed.txt"
 total_downloads = 0
 user_languages = {}
@@ -32,7 +31,7 @@ def track_user_info(user):
     """የተማሪውን ID፣ ስምና ዩዘርኔም መዝግቦ የሚይዝ"""
     try:
         user_id = str(user.id)
-        name = user.first_name or "Unknown"
+        name = (user.first_name or "Student").replace("|", "-")
         username = f"@{user.username}" if user.username else "No Username"
         
         registered_ids = set()
@@ -50,7 +49,6 @@ def track_user_info(user):
         print(f"Tracking error: {e}")
 
 def get_users_list():
-    """የተጠቃሚዎችን መረጃ የሚያወጣ"""
     if not os.path.exists(USERS_FILE):
         return []
     with open(USERS_FILE, "r", encoding="utf-8") as f:
@@ -170,23 +168,34 @@ def get_lang_selection_keyboard():
     )
     return keyboard
 
-# --- STATS COMMAND WITH DETAILED STUDENT NAMES ---
-@bot.message_handler(commands=['stats'])
+# --- STATS COMMAND WITH DETAILED USER ID ---
+@bot.message_handler(commands=['stats', 'States', 'stat'])
 def handle_stats(message):
-    users = get_users_list()
-    total_u = len(users)
-    
-    # የመጨረሻዎቹን 15 ተጠቃሚዎች ዝርዝር ማሳየት
-    recent_users = users[-15:]
-    user_list_str = "\n".join([f"👤 {u.split(' | ')[1]} ({u.split(' | ')[2]})" for u in recent_users]) if recent_users else "ምንም ተጠቃሚ የለም"
-    
-    stats_msg = (
-        "📊 **Bahirab Bot Analytics**\n\n"
-        f"👥 **ጠቅላላ ተማሪዎች:** `{total_u}`\n"
-        f"📥 **የተወረዱ ፈተናዎች:** `{total_downloads}` ጊዜ\n\n"
-        f"📝 **የቅርብ ተጠቃሚዎች ስም ዝርዝር፦**\n{user_list_str}"
-    )
-    bot.reply_to(message, stats_msg, parse_mode="Markdown")
+    try:
+        users = get_users_list()
+        total_u = len(users)
+        
+        recent_users = users[-20:]
+        lines = []
+        for u in recent_users:
+            parts = u.split(" | ")
+            if len(parts) >= 3:
+                u_id, u_name, u_user = parts[0], parts[1], parts[2]
+                lines.append(f"• **ID:** `{u_id}` | 👤 {u_name} ({u_user})")
+            else:
+                lines.append(f"• {u}")
+                
+        user_list_str = "\n".join(lines) if lines else "ምንም ተጠቃሚ የለም"
+        
+        stats_msg = (
+            "📊 **Bahirab Bot Analytics**\n\n"
+            f"👥 **ጠቅላላ ተማሪዎች:** `{total_u}`\n"
+            f"📥 **የተወረዱ ፈተናዎች:** `{total_downloads}` ጊዜ\n\n"
+            f"📝 **የቅርብ ተጠቃሚዎች ዝርዝር (ID ጨምሮ)፦**\n{user_list_str}"
+        )
+        bot.send_message(message.chat.id, stats_msg, parse_mode="Markdown")
+    except Exception as e:
+        bot.send_message(message.chat.id, f"Stats Error: {e}")
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("lang_") or call.data == "change_lang")
 def handle_language_choice(call):
@@ -234,7 +243,6 @@ def handle_start(message):
     global total_downloads
     chat_id = message.chat.id
     
-    # የተጠቃሚውን ስምና መረጃ መመዝገብ
     track_user_info(message.from_user)
     
     text_parts = message.text.split()
@@ -285,4 +293,4 @@ def handle_start(message):
 if __name__ == '__main__':
     threading.Thread(target=run_flask).start()
     print("Bahirab Bot ዝግጁ ነው...")
-    bot.infinity_polling()
+    bot.infinity_polling(none_stop=True)
