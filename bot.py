@@ -23,7 +23,31 @@ CHANNEL_ID = "@BahirabAcademy"
 CHANNEL_USERNAME = "BahirabAcademy"
 WEB_APP_URL = "https://abrhamamsalu248-cpu.github.io/Bahirab/"
 
+# --- Analytics Data Storage ---
+USERS_FILE = "users.txt"
+total_downloads = 0
 user_languages = {}
+
+def track_user(user_id):
+    """ተጠቃሚዎችን በፋይል ውስጥ መዝግቦ የሚያስቀምጥ"""
+    try:
+        users = set()
+        if os.path.exists(USERS_FILE):
+            with open(USERS_FILE, "r") as f:
+                users = set(line.strip() for line in f if line.strip())
+        
+        if str(user_id) not in users:
+            with open(USERS_FILE, "a") as f:
+                f.write(f"{user_id}\n")
+    except Exception as e:
+        print(f"Tracking error: {e}")
+
+def get_total_users():
+    """ጠቅላላ የተጠቃሚዎችን ብዛት የሚያሰላ"""
+    if os.path.exists(USERS_FILE):
+        with open(USERS_FILE, "r") as f:
+            return len(set(line.strip() for line in f if line.strip()))
+    return 0
 
 EXAMS = {
     "global_trend_2015": {"name": "Global Trend Final Exam 2015", "msg_id": 3, "type": "file"},
@@ -139,6 +163,18 @@ def get_lang_selection_keyboard():
     )
     return keyboard
 
+# --- ADMIN STATS COMMAND ---
+@bot.message_handler(commands=['stats'])
+def handle_stats(message):
+    total_u = get_total_users()
+    stats_msg = (
+        "📊 **Bahirab Bot Analytics**\n\n"
+        f"👥 **ጠቅላላ ተጠቃሚዎች (Unique Users):** `{total_u}` ተማሪዎች\n"
+        f"📥 **የተወረዱ ፈተናዎች ድምር:** `{total_downloads}` ጊዜ\n\n"
+        "⚡️ *ቦቱ እና ሰርቨሩ በጥሩ ሁኔታ እየሰሩ ነው!*"
+    )
+    bot.reply_to(message, stats_msg, parse_mode="Markdown")
+
 @bot.callback_query_handler(func=lambda call: call.data.startswith("lang_") or call.data == "change_lang")
 def handle_language_choice(call):
     chat_id = call.message.chat.id
@@ -182,11 +218,15 @@ def handle_language_choice(call):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
+    global total_downloads
     chat_id = message.chat.id
+    track_user(chat_id)
+    
     text_parts = message.text.split()
     lang = user_languages.get(chat_id, "am")
     
     if len(text_parts) > 1 and text_parts[1] in EXAMS:
+        total_downloads += 1
         exam = EXAMS[text_parts[1]]
         if exam["type"] == "link":
             post_url = f"https://t.me/{CHANNEL_USERNAME}/{exam['msg_id']}"
