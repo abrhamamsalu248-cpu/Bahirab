@@ -45,16 +45,11 @@
     <h2>📚 Bahirab Materials</h2>
     <p>የሚፈልጉትን ማቴሪያል ይምረጡና ማስታወቂያ አይተው ያውርዱ፦</p>
 
+    <!-- ትክክለኛው ማቴሪያል -->
     <div class="card">
-        <h3>📖 Macroeconomics Summary Notes</h3>
-        <p>መጠን፡ 2.8 MB • Year 2 / Semester 1</p>
-        <button class="btn" onclick="watchAd('https://t.me/')">📥 ማስታወቂያ አይተህ አውርድ</button>
-    </div>
-
-    <div class="card">
-        <h3>📝 Econometrics Mid Exam & Answers</h3>
-        <p>መጠን፡ 1.5 MB • Exam Questions</p>
-        <button class="btn" onclick="watchAd('https://t.me/')">📥 ማስታወቂያ አይተህ አውርድ</button>
+        <h3>🧠 General Psychology Mid Exam</h3>
+        <p>Bahir Dar University • Freshman Course • 681.9 KB PDF</p>
+        <button class="btn" onclick="watchAd('https://t.me/BahirabAcademy/13')">📥 ማስታወቂያ አይተህ አውርድ</button>
     </div>
 
     <script>
@@ -62,7 +57,6 @@
         tg.ready();
         tg.expand();
 
-        // የራስህ ትክክለኛ Adsgram Block ID
         const adController = window.Adsgram.init({ blockId: "int-44107" });
 
         function watchAd(downloadUrl) {
@@ -72,11 +66,11 @@
 
             adController.show().then((result) => {
                 btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያውን ስላዩ እናመሰግናለን! ማውረድ ጀምሯል።");
-                tg.openLink(downloadUrl);
+                // ማስታወቂያው ሲያልቅ ቀጥታ ወደ ቴሌግራም ፖስቱ ይወስደዋል
+                tg.openTelegramLink(downloadUrl);
             }).catch((err) => {
                 btn.innerText = originalText;
-                tg.showAlert("ማስታወቂያው አልተጠናቀቀም ወይም አልተገኘም!");
+                tg.showAlert("ማስታወቂያውን ሳያዩ ፋይሉን ማውረድ አይችሉም!");
             });
         }
     </script>
