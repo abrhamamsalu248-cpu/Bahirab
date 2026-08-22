@@ -196,19 +196,13 @@ def handle_start(message):
             link_keyboard.add(InlineKeyboardButton(text=open_btn_text, url=post_url))
             link_keyboard.add(InlineKeyboardButton(text=more_btn_text, web_app=WebAppInfo(url=WEB_APP_URL)))
             msg = (
-                f"✅ ማስታወቂያውን ስላያችሁ እናመሰግናለን!\n\n📌 **{exam['name']}**\nፈተናውን ለማየት ሊንኩን ይጫኑ፦\n🔗 {post_url}"
+                f"📌 **{exam['name']}**\n\nፈተናውን ለማየት ሊንኩን ይጫኑ፦\n🔗 {post_url}"
                 if lang == "am" else
-                f"✅ Thank you for watching the ad!\n\n📌 **{exam['name']}**\nClick the link to view the exam:\n🔗 {post_url}"
+                f"📌 **{exam['name']}**\n\nClick the link to view the exam:\n🔗 {post_url}"
             )
             bot.send_message(chat_id, msg, reply_markup=link_keyboard, parse_mode="Markdown")
             return
 
-        ad_thanks = (
-            f"✅ ማስታወቂያውን ስላያችሁ እናመሰግናለን!\n**{exam['name']}** ከታች ተልኮላችኋል፦"
-            if lang == "am" else
-            f"✅ Thank you for watching the ad!\n**{exam['name']}** has been sent below:"
-        )
-        bot.send_message(chat_id, ad_thanks, parse_mode="Markdown")
         try:
             bot.copy_message(
                 chat_id=chat_id,
@@ -228,8 +222,6 @@ def handle_start(message):
     )
 
 if __name__ == '__main__':
-    # 1. ዌብ ሰርቨሩን በ Background ማብራት (Render እንዳይዘገይ)
     threading.Thread(target=run_flask).start()
-    # 2. ቦቱን ማስጀመር
     print("Bahirab Bot ዝግጁ ነው...")
     bot.infinity_polling()
