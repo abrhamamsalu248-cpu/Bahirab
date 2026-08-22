@@ -23,31 +23,38 @@ CHANNEL_ID = "@BahirabAcademy"
 CHANNEL_USERNAME = "BahirabAcademy"
 WEB_APP_URL = "https://abrhamamsalu248-cpu.github.io/Bahirab/"
 
-# --- Analytics Data Storage ---
-USERS_FILE = "users.txt"
+# --- User Tracking & Analytics ---
+USERS_FILE = "users_detailed.txt"
 total_downloads = 0
 user_languages = {}
 
-def track_user(user_id):
-    """ተጠቃሚዎችን በፋይል ውስጥ መዝግቦ የሚያስቀምጥ"""
+def track_user_info(user):
+    """የተማሪውን ID፣ ስምና ዩዘርኔም መዝግቦ የሚይዝ"""
     try:
-        users = set()
-        if os.path.exists(USERS_FILE):
-            with open(USERS_FILE, "r") as f:
-                users = set(line.strip() for line in f if line.strip())
+        user_id = str(user.id)
+        name = user.first_name or "Unknown"
+        username = f"@{user.username}" if user.username else "No Username"
         
-        if str(user_id) not in users:
-            with open(USERS_FILE, "a") as f:
-                f.write(f"{user_id}\n")
+        registered_ids = set()
+        if os.path.exists(USERS_FILE):
+            with open(USERS_FILE, "r", encoding="utf-8") as f:
+                for line in f:
+                    parts = line.strip().split(" | ")
+                    if parts:
+                        registered_ids.add(parts[0])
+                        
+        if user_id not in registered_ids:
+            with open(USERS_FILE, "a", encoding="utf-8") as f:
+                f.write(f"{user_id} | {name} | {username}\n")
     except Exception as e:
         print(f"Tracking error: {e}")
 
-def get_total_users():
-    """ጠቅላላ የተጠቃሚዎችን ብዛት የሚያሰላ"""
-    if os.path.exists(USERS_FILE):
-        with open(USERS_FILE, "r") as f:
-            return len(set(line.strip() for line in f if line.strip()))
-    return 0
+def get_users_list():
+    """የተጠቃሚዎችን መረጃ የሚያወጣ"""
+    if not os.path.exists(USERS_FILE):
+        return []
+    with open(USERS_FILE, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
 
 EXAMS = {
     "global_trend_2015": {"name": "Global Trend Final Exam 2015", "msg_id": 3, "type": "file"},
@@ -163,15 +170,21 @@ def get_lang_selection_keyboard():
     )
     return keyboard
 
-# --- ADMIN STATS COMMAND ---
+# --- STATS COMMAND WITH DETAILED STUDENT NAMES ---
 @bot.message_handler(commands=['stats'])
 def handle_stats(message):
-    total_u = get_total_users()
+    users = get_users_list()
+    total_u = len(users)
+    
+    # የመጨረሻዎቹን 15 ተጠቃሚዎች ዝርዝር ማሳየት
+    recent_users = users[-15:]
+    user_list_str = "\n".join([f"👤 {u.split(' | ')[1]} ({u.split(' | ')[2]})" for u in recent_users]) if recent_users else "ምንም ተጠቃሚ የለም"
+    
     stats_msg = (
         "📊 **Bahirab Bot Analytics**\n\n"
-        f"👥 **ጠቅላላ ተጠቃሚዎች (Unique Users):** `{total_u}` ተማሪዎች\n"
-        f"📥 **የተወረዱ ፈተናዎች ድምር:** `{total_downloads}` ጊዜ\n\n"
-        "⚡️ *ቦቱ እና ሰርቨሩ በጥሩ ሁኔታ እየሰሩ ነው!*"
+        f"👥 **ጠቅላላ ተማሪዎች:** `{total_u}`\n"
+        f"📥 **የተወረዱ ፈተናዎች:** `{total_downloads}` ጊዜ\n\n"
+        f"📝 **የቅርብ ተጠቃሚዎች ስም ዝርዝር፦**\n{user_list_str}"
     )
     bot.reply_to(message, stats_msg, parse_mode="Markdown")
 
@@ -220,7 +233,9 @@ def handle_language_choice(call):
 def handle_start(message):
     global total_downloads
     chat_id = message.chat.id
-    track_user(chat_id)
+    
+    # የተጠቃሚውን ስምና መረጃ መመዝገብ
+    track_user_info(message.from_user)
     
     text_parts = message.text.split()
     lang = user_languages.get(chat_id, "am")
