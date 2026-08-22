@@ -196,13 +196,19 @@ def handle_start(message):
             link_keyboard.add(InlineKeyboardButton(text=open_btn_text, url=post_url))
             link_keyboard.add(InlineKeyboardButton(text=more_btn_text, web_app=WebAppInfo(url=WEB_APP_URL)))
             msg = (
-                f"📌 **{exam['name']}**\n\nፈተናውን ለማየት ሊንኩን ይጫኑ፦\n🔗 {post_url}"
+                f"📖 **{exam['name']}**\n\n🔗 ፈተናውን ለማግኘት ከታች ያለውን ሊንክ ይጫኑ፦\n👉 {post_url}"
                 if lang == "am" else
-                f"📌 **{exam['name']}**\n\nClick the link to view the exam:\n🔗 {post_url}"
+                f"📖 **{exam['name']}**\n\n🔗 Click the link below to access the exam:\n👉 {post_url}"
             )
             bot.send_message(chat_id, msg, reply_markup=link_keyboard, parse_mode="Markdown")
             return
 
+        file_notice = (
+            f"📥 **{exam['name']}**\n\n✨ ፈተናው ከታች ተልኮላችኋል 👇"
+            if lang == "am" else
+            f"📥 **{exam['name']}**\n\n✨ Your exam has been sent below 👇"
+        )
+        bot.send_message(chat_id, file_notice, parse_mode="Markdown")
         try:
             bot.copy_message(
                 chat_id=chat_id,
