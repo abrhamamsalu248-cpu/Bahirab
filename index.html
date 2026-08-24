@@ -9,13 +9,13 @@
     <style>
         :root {
             --primary: #0088cc;
-            --primary-dark: #006699;
             --bg: #f4f5f7;
             --card-bg: #ffffff;
             --text-main: #222;
             --text-sub: #666;
             --border: #e1e4e8;
             --success: #28a745;
+            --warning: #f59e0b;
         }
 
         body {
@@ -77,7 +77,7 @@
             background: #e3edf5;
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
@@ -108,14 +108,13 @@
         .main-category > summary {
             padding: 14px 16px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             background: #edf6fc;
             color: var(--primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            user-select: none;
         }
         .main-category[open] > summary {
             background: var(--primary);
@@ -129,11 +128,10 @@
         }
         .course-details summary {
             padding: 10px 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #333;
             cursor: pointer;
-            user-select: none;
         }
         .course-details[open] > summary {
             color: var(--primary);
@@ -142,7 +140,7 @@
         }
         .card {
             background: #ffffff;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 10px;
             margin: 8px;
             border: 1px solid #eee;
@@ -168,7 +166,7 @@
             padding: 8px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             display: block;
             text-align: center;
@@ -183,12 +181,12 @@
             background-color: var(--success);
             color: white;
         }
-        .btn-reward {
-            background-color: var(--primary);
+        .btn-ad-read {
+            background-color: var(--warning);
             color: white;
         }
 
-        /* Fullscreen In-App Reader */
+        /* Fullscreen Reader */
         #readerView {
             display: none;
             position: fixed;
@@ -224,12 +222,6 @@
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-        }
-        .reader-body {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #333;
-            margin-bottom: 20px;
         }
         .q-box {
             background: #f9fafb;
@@ -293,8 +285,7 @@
             <h4>Freshman Modules and Exams Application</h4>
             <p>All-in-one Android Application</p>
             <div class="btn-group">
-                <button class="btn btn-read" onclick="openReaderWithAd('freshman_app', 'Freshman Application Guide')">📖 መግለጫውን አንብብ</button>
-                <button class="btn btn-free" onclick="downloadDirect('freshman_app')">📥 በነፃ አውርድ (Free)</button>
+                <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('freshman_app', 'Freshman App Guide')">⭐ አንብብና አውርድ (Ad)</button>
             </div>
         </div>
     </details>
@@ -305,28 +296,30 @@
 
         <details class="course-details" open>
             <summary>💡 Logic & Critical Thinking</summary>
+            <!-- Free direct -->
             <div class="card">
                 <h4>Logic Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('logic_mid', 'Logic Mid Exam (BDU)')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('logic_mid')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('logic_mid', 'Logic Mid Exam')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('logic_mid')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
+            <!-- Free direct -->
             <div class="card">
                 <h4>Logic Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('logic_mid_2016', 'Logic Mid Exam 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('logic_mid_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('logic_mid_2016', 'Logic Mid Exam 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('logic_mid_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
+            <!-- Ad unlock inside -->
             <div class="card">
                 <h4>Critical Thinking Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('critical_thinking_mid_2017', 'Critical Thinking Mid 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('critical_thinking_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('critical_thinking_mid_2017', 'Critical Thinking Mid 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -337,16 +330,15 @@
                 <h4>Economics Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('econ_mid_2016', 'Economics Mid Exam 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('econ_mid_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('econ_mid_2016', 'Economics Mid Exam 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('econ_mid_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Economics Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('econ_mid_2017', 'Economics Mid Exam 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('econ_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('econ_mid_2017', 'Economics Mid Exam 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -357,32 +349,23 @@
                 <h4>Geography Mid Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_2014', 'Geography Mid Exam 2014')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_2014')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('geography_2014', 'Geography Mid 2014')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('geography_2014')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_mid_2016', 'Geography Mid Exam 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_mid_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Geography Mid Exam 2016 (Bahirab)</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_mid_2016_b', 'Geography Mid 2016 (Bahirab)')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_mid_2016_b')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('geography_mid_2016', 'Geography Mid 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('geography_mid_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Geography Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_mid_2017', 'Geography Mid Exam 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('geography_mid_2017', 'Geography Mid Exam 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -393,16 +376,15 @@
                 <h4>Global Trend Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('global_trend_2016', 'Global Trends Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('global_trend_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('global_trend_2016', 'Global Trends Mid 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('global_trend_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Global Trend Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('global_trend_mid_2017', 'Global Trends Mid 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('global_trend_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('global_trend_mid_2017', 'Global Trends Mid 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -413,24 +395,15 @@
                 <h4>History Mid Exam 2015</h4>
                 <p>Bahir Dar University • Year: 2015</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('history_2015', 'History Mid Exam 2015')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('history_2015')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>History Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('history_mid_2016', 'History Mid Exam 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('history_mid_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('history_2015', 'History Mid 2015')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('history_2015')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>History Mid Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('history_mid_2017', 'History Mid Exam 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('history_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('history_mid_2017', 'History Mid Exam 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -438,47 +411,18 @@
         <details class="course-details">
             <summary>⚖️ Moral & Civics</summary>
             <div class="card">
-                <h4>Civics Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('civics_mid', 'Civics Mid Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('civics_mid')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
                 <h4>Moral and Civic Education Mid 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('moral_civic_mid_2016', 'Moral & Civic Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('moral_civic_mid_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('moral_civic_mid_2016', 'Moral & Civic Mid 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('moral_civic_mid_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Moral and Civic Mid Exam (Bahirab Set)</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('moral_civic_mid_323', 'Moral & Civic Mid Set')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('moral_civic_mid_323')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🦴 Anthropology</summary>
-            <div class="card">
-                <h4>Anthropology Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('anthro_mid_2016', 'Anthropology Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('anthro_mid_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Anthropology Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('anthro_mid_2017', 'Anthropology Mid 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('anthro_mid_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('moral_civic_mid_323', 'Moral & Civic Mid Set')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -489,140 +433,42 @@
                 <h4>Emerging Technology Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('emerging_tech_mid', 'Emerging Tech Mid Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('emerging_tech_mid')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('emerging_tech_mid', 'Emerging Tech Mid')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('emerging_tech_mid')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Emerging Technology Mid Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('emerging_tech_2016', 'Emerging Tech Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('emerging_tech_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('emerging_tech_2016', 'Emerging Tech Mid 2016')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
 
         <details class="course-details">
-            <summary>🧠 Psychology & Inclusiveness</summary>
-            <div class="card">
-                <h4>Inclusiveness Mid Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('inclusiveness_2014', 'Inclusiveness Mid 2014')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('inclusiveness_2014')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>General Psychology Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('psychology_mid', 'Psychology Mid Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('psychology_mid')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>General Psychology Material / Exam</h4>
-                <p>Bahir Dar University • Course Material</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('psychology_330', 'Psychology Material')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('psychology_330')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🗣️ Communicative English</summary>
-            <div class="card">
-                <h4>Communication English Skills Two Mid 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('comm_english_two_2016', 'Comm English II Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('comm_english_two_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Mid</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('comm_english_two_b', 'Comm English II Mid')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('comm_english_two_b')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Mid 2016/17</h4>
-                <p>Bahir Dar University • Year: 2016/17</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('comm_english_two_2017', 'Comm English II Mid 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('comm_english_two_2017')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📐 Mathematics</summary>
+            <summary>📐 Mathematics & Physics</summary>
             <div class="card">
                 <h4>Applied Mathematics Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('applied_math_mid', 'Applied Math Mid Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('applied_math_mid')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Mathematics For Social Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('math_social_mid', 'Math For Social Mid')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('math_social_mid')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Mathematics For Social Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('math_social_mid_2016', 'Math For Social Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('math_social_mid_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>💼 Entrepreneurship</summary>
-            <div class="card">
-                <h4>Entrepreneurship Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('entrepreneurship_mid_2016', 'Entrepreneurship Mid 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('entrepreneurship_mid_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🔬 Physics, Chemistry & C++</summary>
-            <div class="card">
-                <h4>General Chemistry Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('chemistry_mid', 'General Chemistry Mid')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('chemistry_mid')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('applied_math_mid', 'Applied Math Mid')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('applied_math_mid')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>General Physics Mid Exam</h4>
                 <p>Bahir Dar University • Freshman</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('physics_mid', 'General Physics Mid')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('physics_mid')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('physics_mid', 'General Physics Mid')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('physics_mid')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>C++ BDU Mid Exam</h4>
                 <p>Bahir Dar University • Programming Course</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('cpp_mid', 'C++ Mid Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('cpp_mid')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('cpp_mid', 'C++ Mid Exam')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -635,27 +481,18 @@
         <details class="course-details">
             <summary>💡 Logic & Critical Thinking</summary>
             <div class="card">
-                <h4>Logic Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('logic_final', 'Logic Final Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('logic_final')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
                 <h4>Logic Final Exam 2014</h4>
                 <p>Bahir Dar University • Year: 2014</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('logic_final_2014', 'Logic Final Exam 2014')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('logic_final_2014')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('logic_final_2014', 'Logic Final 2014')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('logic_final_2014')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Logic Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('logic_final_2017', 'Logic Final Exam 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('logic_final_2017')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('logic_final_2017', 'Logic Final Exam 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -663,247 +500,56 @@
         <details class="course-details">
             <summary>📊 Economics</summary>
             <div class="card">
-                <h4>Economics Final Exam 2013</h4>
-                <p>Bahir Dar University • Year: 2013</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('econ_final_2013', 'Economics Final 2013')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('econ_final_2013')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
                 <h4>Economics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('econ_final_2016', 'Economics Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('econ_final_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('econ_final_2016', 'Economics Final 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('econ_final_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Economics Final Exam 2017</h4>
                 <p>Bahir Dar University • Year: 2017</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('econ_final_814', 'Economics Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('econ_final_814')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('econ_final_814', 'Economics Final 2017')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
 
         <details class="course-details">
-            <summary>🗺️ Geography</summary>
-            <div class="card">
-                <h4>Geography Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_final', 'Geography Final Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_final')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
+            <summary>🗺️ Geography & History</summary>
             <div class="card">
                 <h4>Geography Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_final_2016', 'Geography Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_final_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Geography Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('geography_final_2017', 'Geography Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('geography_final_2017')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🌍 Global Trends</summary>
-            <div class="card">
-                <h4>Global Trend Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('global_trend_2015', 'Global Trends Final 2015')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('global_trend_2015')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Global Trend Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('global_trend_final_790', 'Global Trends Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('global_trend_final_790')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📜 History</summary>
-            <div class="card">
-                <h4>History Final Exam 2015 (Bahirab)</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('history_final_2015_b', 'History Final 2015')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('history_final_2015_b')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('geography_final_2016', 'Geography Final 2016')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('geography_final_2016')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>History Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('history_final_2016', 'History Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('history_final_2016')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('history_final_2016', 'History Final 2016')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
 
         <details class="course-details">
-            <summary>⚖️ Moral & Civics</summary>
+            <summary>📐 Mathematics & Physics</summary>
             <div class="card">
-                <h4>Civics Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('civics_final_2016', 'Civics Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('civics_final_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Civics Final Exam 2023</h4>
-                <p>Bahir Dar University • Year: 2023 G.C</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('civics_final_2023', 'Civics Final 2023')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('civics_final_2023')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🦴 Anthropology</summary>
-            <div class="card">
-                <h4>Anthropology Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('anthro_final_2015', 'Anthropology Final 2015')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('anthro_final_2015')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Anthropology Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('anthro_final_2016', 'Anthropology Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('anthro_final_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🤖 Emerging Technologies</summary>
-            <div class="card">
-                <h4>Emerging Technology Final Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('emerging_tech_2014', 'Emerging Tech Final 2014')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('emerging_tech_2014')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Emerging Technology Final Exam</h4>
+                <h4>Applied Mathematics One Final</h4>
                 <p>Bahir Dar University • Freshman</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('emerging_tech_final', 'Emerging Tech Final Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('emerging_tech_final')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🧠 Psychology & Inclusiveness</summary>
-            <div class="card">
-                <h4>General Psychology Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('psychology_final', 'Psychology Final Exam')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('psychology_final')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>General Psychology Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('psychology_final_793', 'Psychology Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('psychology_final_793')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🗣️ Communicative English</summary>
-            <div class="card">
-                <h4>Communication Skills English Final</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('comm_skills_final', 'Communication Skills Final')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('comm_skills_final')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Final</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('comm_english_two_final_406', 'Comm English II Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('comm_english_two_final_406')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📐 Mathematics</summary>
-            <div class="card">
-                <h4>Applied Mathematics One Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('applied_math_one_final', 'Applied Math I Final')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('applied_math_one_final')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-read trans-read-btn" onclick="openReaderDirect('applied_math_one_final', 'Applied Math I Final')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-free trans-free-btn" onclick="downloadDirect('applied_math_one_final')">📥 በነፃ አውርድ</button>
                 </div>
             </div>
             <div class="card">
                 <h4>Mathematics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('math_final_2016', 'Mathematics Final 2016')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('math_final_2016')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>💼 Entrepreneurship</summary>
-            <div class="card">
-                <h4>Entrepreneurship Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('entrepreneurship_final_2015', 'Entrepreneurship Final 2015')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('entrepreneurship_final_2015')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Entrepreneurship Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('entrepreneurship_final_785', 'Entrepreneurship Final 2017')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('entrepreneurship_final_785')">📥 በነፃ አውርድ</button>
-                </div>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🔬 General Physics</summary>
-            <div class="card">
-                <h4>General Physics Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <div class="btn-group">
-                    <button class="btn btn-read" onclick="openReaderWithAd('physics_final_224', 'General Physics Final')">📖 እዚሁ አንብብ</button>
-                    <button class="btn btn-free" onclick="downloadDirect('physics_final_224')">📥 በነፃ አውርድ</button>
+                    <button class="btn btn-ad-read trans-ad-btn" onclick="openReaderWithAd('math_final_2016', 'Mathematics Final 2016')">⭐ አንብብና አውርድ (Ad)</button>
                 </div>
             </div>
         </details>
@@ -913,14 +559,14 @@
     <div id="readerView">
         <div class="reader-header">
             <h3 class="reader-title" id="readerExamTitle">Exam Reader</h3>
-            <button class="reader-close" onclick="closeReader()">✖ ዝጋ (Close)</button>
+            <button class="reader-close" id="readerCloseBtn" onclick="closeReader()">✖ ዝጋ (Close)</button>
         </div>
         
         <div class="reader-body" id="readerContent"></div>
 
         <div class="reader-download-card">
-            <h4 style="margin: 0 0 6px 0; color: #0088cc;">📥 ሙሉውን የፈተና PDF ይፈልጋሉ?</h4>
-            <p style="font-size: 12px; color: #555; margin: 0 0 10px 0;">ይህን ፈተና በቴሌግራም ቦት በኩል በቀጥታ ለማውረድ ከታች ያለውን በተን ይጫኑ፦</p>
+            <h4 id="readerDlTitle" style="margin: 0 0 6px 0; color: #0088cc;">📥 ሙሉውን የፈተና PDF ይፈልጋሉ?</h4>
+            <p id="readerDlSub" style="font-size: 12px; color: #555; margin: 0 0 10px 0;">ይህን ፈተና በቴሌግራም ቦት በኩል በቀጥታ ለማውረድ ከታች ያለውን በተን ይጫኑ፦</p>
             <button id="readerDownloadBtn" class="btn btn-free" style="padding: 10px;" onclick="">📥 PDF በቴሌግራም አውርድ</button>
         </div>
     </div>
@@ -932,7 +578,7 @@
             tg.expand();
         }
 
-        let currentLang = localStorage.getItem('bahirab_lang') || null;
+        let currentLang = localStorage.getItem('bahirab_lang') || 'am';
 
         const translations = {
             am: {
@@ -943,7 +589,12 @@
                 finalCat: "🎓 Final Exams (የማጠቃለያ ፈተናዎች)",
                 btnFree: "📥 በነፃ አውርድ",
                 btnRead: "📖 እዚሁ አንብብ",
-                sent: "ተልኳል! ወደ ቦቱ ይመለሱ..."
+                btnAdRead: "⭐ አንብብና አውርድ (Ad)",
+                sent: "ተልኳል! ወደ ቦቱ ይመለሱ...",
+                readerDlTitle: "📥 ሙሉውን የፈተና PDF ይፈልጋሉ?",
+                readerDlSub: "ይህን ፈተና በቴሌግራም ቦት በኩል በቀጥታ ለማውረድ ከታች ያለውን በተን ይጫኑ፦",
+                readerDlBtn: "📥 PDF በቴሌግራም አውርድ",
+                readerClose: "✖ ዝጋ (Close)"
             },
             en: {
                 title: "📚 Bahirab Study Hub",
@@ -953,7 +604,12 @@
                 finalCat: "🎓 Final Exams",
                 btnFree: "📥 Free Download",
                 btnRead: "📖 Read Here",
-                sent: "Sent! Return to bot..."
+                btnAdRead: "⭐ Read & Download (Ad)",
+                sent: "Sent! Return to bot...",
+                readerDlTitle: "📥 Need the full Exam PDF?",
+                readerDlSub: "Click the button below to download the original PDF file from the bot:",
+                readerDlBtn: "📥 Download PDF in Telegram",
+                readerClose: "✖ Close"
             }
         };
 
@@ -975,10 +631,21 @@
             document.getElementById('appCatTitle').innerText = t.appCat;
             document.getElementById('midCatTitle').innerText = t.midCat;
             document.getElementById('finalCatTitle').innerText = t.finalCat;
+
+            // Translate dynamic elements
+            document.getElementById('readerDlTitle').innerText = t.readerDlTitle;
+            document.getElementById('readerDlSub').innerText = t.readerDlSub;
+            document.getElementById('readerDownloadBtn').innerText = t.readerDlBtn;
+            document.getElementById('readerCloseBtn').innerText = t.readerClose;
+
+            // Translate all buttons on screen
+            document.querySelectorAll('.trans-free-btn').forEach(b => b.innerText = t.btnFree);
+            document.querySelectorAll('.trans-read-btn').forEach(b => b.innerText = t.btnRead);
+            document.querySelectorAll('.trans-ad-btn').forEach(b => b.innerText = t.btnAdRead);
         }
 
         window.onload = function() {
-            if (!currentLang) {
+            if (!localStorage.getItem('bahirab_lang')) {
                 document.getElementById('langModal').style.display = 'flex';
             } else {
                 document.getElementById('langModal').style.display = 'none';
@@ -986,14 +653,12 @@
             }
         };
 
-        // Exam Question Bank for In-App Reader
         const examDetails = {
             logic_mid: {
-                title: "Logic & Critical Thinking - Mid Exam Review",
+                title: "Logic & Critical Thinking - Mid Review",
                 questions: [
                     { q: "1. Which branch of philosophy studies the nature of knowledge?", options: ["A) Metaphysics", "B) Epistemology", "C) Ethics", "D) Aesthetics"], ans: "Answer: B (Epistemology)" },
-                    { q: "2. A valid deductive argument with all true premises is called:", options: ["A) Strong", "B) Sound", "C) Cogent", "D) Weak"], ans: "Answer: B (Sound)" },
-                    { q: "3. 'You must accept this proposal, or you will lose your job.' This contains the fallacy of:", options: ["A) Appeal to Force (Ad Baculum)", "B) Appeal to Pity", "C) Straw Man", "D) False Cause"], ans: "Answer: A (Appeal to Force)" }
+                    { q: "2. A valid deductive argument with all true premises is called:", options: ["A) Strong", "B) Sound", "C) Cogent", "D) Weak"], ans: "Answer: B (Sound)" }
                 ]
             },
             econ_mid_2016: {
@@ -1007,7 +672,12 @@
 
         let adController = null;
 
-        // In-App Reader with Interstitial Ad Trigger
+        // 1. ነፃ ማንበቢያ (ያለ ማስታወቂያ)
+        function openReaderDirect(fileKey, defaultTitle) {
+            renderReader(fileKey, defaultTitle);
+        }
+
+        // 2. በማስታወቂያ ከፍቶ ማንበቢያ
         function openReaderWithAd(fileKey, defaultTitle) {
             try {
                 if (!adController) {
@@ -1054,7 +724,7 @@
             document.getElementById('readerView').style.display = 'none';
         }
 
-        // Direct Download via Bot
+        // በቀጥታ ማውረጃ (Direct Download)
         function downloadDirect(fileKey) {
             const t = translations[currentLang] || translations.am;
             const btn = window.event ? window.event.target : null;
@@ -1062,7 +732,6 @@
 
             if (tg && tg.initData) {
                 tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
-                setTimeout(() => { tg.close(); }, 800);
             } else {
                 window.location.href = "https://t.me/Bahirabbot?start=" + fileKey;
             }
