@@ -3,18 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bahirab Materials Hub</title>
+    <title>Bahirab Study & Exam Hub</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background-color: #f4f5f7;
-            color: #222;
-            padding: 14px;
-            margin: 0;
+        :root {
+            --primary: #0088cc;
+            --primary-dark: #006699;
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
         }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 12px;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Language Modal */
         #langModal {
             position: fixed;
             top: 0;
@@ -29,12 +44,12 @@
         }
         .modal-box {
             background: #ffffff;
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 24px 20px;
             width: 85%;
             max-width: 320px;
             text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
         }
         .modal-box h3 {
             margin: 0 0 16px 0;
@@ -42,132 +57,252 @@
             color: #111;
         }
         .lang-btn {
-            background: #0088cc;
+            background: var(--primary);
             color: #fff;
             border: none;
             padding: 12px;
             font-size: 15px;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 10px;
             width: 100%;
             margin-bottom: 10px;
             cursor: pointer;
         }
 
+        /* Header */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+        }
+        .app-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0;
         }
         .lang-switch {
-            background: #e3edf5;
-            color: #0088cc;
-            border: 1px solid #0088cc;
-            padding: 4px 10px;
+            background: #e0f2fe;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
         }
-
-        h2 {
-            color: #0088cc;
-            text-align: center;
-            margin: 0;
-            font-size: 20px;
-        }
         .subtitle {
-            text-align: center;
             font-size: 13px;
-            color: #666;
-            margin-bottom: 16px;
+            color: var(--text-sub);
+            margin-bottom: 14px;
         }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .stat-card {
+            flex: 1;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-num {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        /* Category Details */
         .main-category {
-            background: #ffffff;
+            background: var(--card-bg);
             border-radius: 12px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border: 1.5px solid #dbeafe;
             overflow: hidden;
-            border: 1.5px solid #0088cc;
         }
         .main-category > summary {
-            padding: 14px 16px;
-            font-weight: bold;
-            font-size: 16px;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 15px;
             cursor: pointer;
-            background: #edf6fc;
-            color: #0088cc;
+            background: #f0f9ff;
+            color: var(--primary);
+            list-style: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            user-select: none;
         }
         .main-category[open] > summary {
-            background: #0088cc;
+            background: var(--primary);
             color: #ffffff;
         }
+
         .course-details {
-            margin: 8px 10px;
+            margin: 8px;
             border-radius: 8px;
-            border: 1px solid #e1e4e8;
-            background: #fafbfc;
+            border: 1px solid var(--border);
+            background: #f9fafb;
         }
         .course-details summary {
             padding: 10px 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: #333;
             cursor: pointer;
-            user-select: none;
         }
         .course-details[open] > summary {
-            color: #0088cc;
-            background: #f0f4f8;
-            border-bottom: 1px solid #e1e4e8;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            background: #edf6fc;
         }
-        .card {
+
+        /* Exam Card */
+        .exam-card {
             background: #ffffff;
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 12px;
             margin: 8px;
-            border: 1px solid #eee;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
         }
-        .card h4 {
-            margin: 0 0 4px 0;
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .exam-title {
             font-size: 13px;
+            font-weight: bold;
             color: #111;
+            margin: 0;
         }
-        .card p {
-            color: #666;
+        .badge {
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        .badge-free {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .badge-prem {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .exam-meta {
             font-size: 11px;
-            margin: 0 0 8px 0;
+            color: var(--text-sub);
+            margin: 0 0 10px 0;
+        }
+        .btn-group {
+            display: flex;
+            gap: 6px;
         }
         .btn {
-            border: none;
+            flex: 1;
             padding: 8px;
             border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
             font-size: 12px;
             font-weight: bold;
-            display: block;
-            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
         }
-        .btn-free {
-            background-color: #28a745;
+        .btn-read {
+            background: #e0f2fe;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .btn-bot {
+            background: var(--primary);
+            color: #ffffff;
         }
         .btn-reward {
-            background-color: #0088cc;
+            background: #f59e0b;
+            color: #ffffff;
         }
-        .btn:disabled {
-            background-color: #cccccc;
+
+        /* In-App Reader View */
+        #readerView {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 10000;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 16px;
+        }
+        .reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .reader-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0;
+        }
+        .reader-close {
+            background: #ef4444;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .q-box {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .q-title {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .q-opt {
+            font-size: 12px;
+            color: #4b5563;
+            margin: 4px 0;
+            padding-left: 8px;
+        }
+        .q-ans {
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--success);
+            background: #ecfdf5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
+    <!-- Language Selector -->
     <div id="langModal">
         <div class="modal-box">
             <h3>🌐 Select Language / ቋንቋ ይምረጡ</h3>
@@ -176,245 +311,145 @@
         </div>
     </div>
 
+    <!-- Header -->
     <div class="top-bar">
-        <h2 id="hubTitle">📚 Bahirab Study Hub</h2>
+        <h2 class="app-title" id="hubTitle">📚 Bahirab Study Hub</h2>
         <button class="lang-switch" onclick="openLangModal()">🌐 ቋንቋ / Lang</button>
     </div>
-    <div class="subtitle" id="hubSubtitle">የፈተና ዓይነት ይምረጡ፦</div>
+    <div class="subtitle" id="hubSubtitle">የፈተና ጥያቄዎችንና ማጠቃለያዎችን እዚህ ያንብቡ፦</div>
 
-    <!-- Application -->
-    <details class="main-category">
-        <summary id="appCatTitle">📱 Freshman App & Modules</summary>
-        <div class="card">
-            <h4>Freshman Modules and Exams Application</h4>
-            <p>All-in-one Android Application</p>
-            <button class="btn btn-reward" onclick="watchRewardAd('freshman_app')">⭐ ፕሪሚየም አፕ (በማስታወቂያ)</button>
+    <!-- Summary Stats -->
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-num">50+</div>
+            <div class="stat-label" id="statExams">ፈተናዎች</div>
         </div>
-    </details>
+        <div class="stat-card">
+            <div class="stat-num">12</div>
+            <div class="stat-label" id="statCourses">የትምህርት አይነቶች</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">BDU</div>
+            <div class="stat-label">Freshman Hub</div>
+        </div>
+    </div>
 
     <!-- ==================== MID EXAMS ==================== -->
     <details class="main-category" open>
         <summary id="midCatTitle">📝 Mid Exams (የአጋማሽ ፈተናዎች)</summary>
 
-        <details class="course-details">
+        <!-- Logic -->
+        <details class="course-details" open>
             <summary>💡 Logic & Critical Thinking</summary>
-            <div class="card">
-                <h4>Logic Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('logic_mid')">📥 በነፃ አውርድ (Free)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Logic Mid Exam (Sample Q&A)</h4>
+                    <span class="badge badge-free">Free Q&A</span>
+                </div>
+                <p class="exam-meta">Bahir Dar University • Freshman Course</p>
+                <div class="btn-group">
+                    <button class="btn btn-read" onclick="openInAppReader('logic_sample')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-bot" onclick="sendToBot('logic_mid')">📥 PDF በቦት</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Logic Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('logic_mid_2016')">📥 በነፃ አውርድ (Free)</button>
+
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Logic Mid Exam 2016</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Year: 2016 • Verified Material</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('logic_mid_2016')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Critical Thinking Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('critical_thinking_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
+
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Critical Thinking 2017 Exam</h4>
+                    <span class="badge badge-prem">⭐ Premium</span>
+                </div>
+                <p class="exam-meta">Year: 2017 • Complete Solutions</p>
+                <div class="btn-group">
+                    <button class="btn btn-reward" onclick="watchRewardAd('critical_thinking_mid_2017')">⭐ በነፃ ይክፈቱ (Ad)</button>
+                </div>
             </div>
         </details>
 
+        <!-- Economics -->
         <details class="course-details">
             <summary>📊 Economics</summary>
-            <div class="card">
-                <h4>Economics Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('econ_mid_2016')">📥 በነፃ አውርድ (Free)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Economics Mid Exam (Sample Q&A)</h4>
+                    <span class="badge badge-free">Free Q&A</span>
+                </div>
+                <p class="exam-meta">Micro & Macro Concepts Review</p>
+                <div class="btn-group">
+                    <button class="btn btn-read" onclick="openInAppReader('econ_sample')">📖 እዚሁ አንብብ</button>
+                    <button class="btn btn-bot" onclick="sendToBot('econ_mid_2016')">📥 PDF በቦት</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Economics Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('econ_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
+
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Economics Mid Exam 2017</h4>
+                    <span class="badge badge-prem">⭐ Premium</span>
+                </div>
+                <p class="exam-meta">Year: 2017 • Full Answer Key</p>
+                <div class="btn-group">
+                    <button class="btn btn-reward" onclick="watchRewardAd('econ_mid_2017')">⭐ በነፃ ይክፈቱ (Ad)</button>
+                </div>
             </div>
         </details>
 
+        <!-- Geography -->
         <details class="course-details">
             <summary>🗺️ Geography</summary>
-            <div class="card">
-                <h4>Geography Mid Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn btn-free" onclick="downloadDirect('geography_2014')">📥 በነፃ አውርድ (Free)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Geography Mid Exam 2016</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Year: 2016 • Bahir Dar University</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('geography_mid_2016')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Geography Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('geography_mid_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Geography Mid Exam 2016 (Bahirab)</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('geography_mid_2016_b')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Geography Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('geography_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🌍 Global Trends</summary>
-            <div class="card">
-                <h4>Global Trend Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('global_trend_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Global Trend Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('global_trend_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Geography Mid Exam 2017</h4>
+                    <span class="badge badge-prem">⭐ Premium</span>
+                </div>
+                <p class="exam-meta">Year: 2017 • Detailed Solutions</p>
+                <div class="btn-group">
+                    <button class="btn btn-reward" onclick="watchRewardAd('geography_mid_2017')">⭐ በነፃ ይክፈቱ (Ad)</button>
+                </div>
             </div>
         </details>
 
+        <!-- Civics & Psychology -->
         <details class="course-details">
-            <summary>📜 History</summary>
-            <div class="card">
-                <h4>History Mid Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn btn-free" onclick="downloadDirect('history_2015')">📥 በነፃ አውርድ (Free)</button>
+            <summary>⚖️ Moral, Civics & Psychology</summary>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Moral & Civic Mid Exam</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Freshman Ethics & Civic Education</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('moral_civic_mid_2016')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>History Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('history_mid_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>History Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('history_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>⚖️ Moral & Civics</summary>
-            <div class="card">
-                <h4>Civics Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('civics_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Moral and Civic Education Mid 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('moral_civic_mid_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Moral and Civic Mid Exam (Bahirab Set)</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('moral_civic_mid_323')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🦴 Anthropology</summary>
-            <div class="card">
-                <h4>Anthropology Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('anthro_mid_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Anthropology Mid Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('anthro_mid_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🤖 Emerging Technologies</summary>
-            <div class="card">
-                <h4>Emerging Technology Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('emerging_tech_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Emerging Technology Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('emerging_tech_2016')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🧠 Psychology & Inclusiveness</summary>
-            <div class="card">
-                <h4>Inclusiveness Mid Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn btn-free" onclick="downloadDirect('inclusiveness_2014')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>General Psychology Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('psychology_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>General Psychology Material / Exam</h4>
-                <p>Bahir Dar University • Course Material</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('psychology_330')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🗣️ Communicative English</summary>
-            <div class="card">
-                <h4>Communication English Skills Two Mid 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('comm_english_two_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Mid</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('comm_english_two_b')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Mid 2016/17</h4>
-                <p>Bahir Dar University • Year: 2016/17</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('comm_english_two_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📐 Mathematics</summary>
-            <div class="card">
-                <h4>Applied Mathematics Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('applied_math_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Mathematics For Social Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('math_social_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Mathematics For Social Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('math_social_mid_2016')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>💼 Entrepreneurship</summary>
-            <div class="card">
-                <h4>Entrepreneurship Mid Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('entrepreneurship_mid_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🔬 Physics, Chemistry & C++</summary>
-            <div class="card">
-                <h4>General Chemistry Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('chemistry_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>General Physics Mid Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('physics_mid')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>C++ BDU Mid Exam</h4>
-                <p>Bahir Dar University • Programming Course</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('cpp_mid')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">General Psychology Mid Exam</h4>
+                    <span class="badge badge-prem">⭐ Premium</span>
+                </div>
+                <p class="exam-meta">Comprehensive Study Guide</p>
+                <div class="btn-group">
+                    <button class="btn btn-reward" onclick="watchRewardAd('psychology_mid')">⭐ በነፃ ይክፈቱ (Ad)</button>
+                </div>
             </div>
         </details>
     </details>
@@ -425,196 +460,61 @@
 
         <details class="course-details">
             <summary>💡 Logic & Critical Thinking</summary>
-            <div class="card">
-                <h4>Logic Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('logic_final')">📥 በነፃ አውርድ (Free)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Logic Final Exam 2014</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Past Final Examination Paper</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('logic_final_2014')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Logic Final Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn btn-free" onclick="downloadDirect('logic_final_2014')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Logic Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('logic_final_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📊 Economics</summary>
-            <div class="card">
-                <h4>Economics Final Exam 2013</h4>
-                <p>Bahir Dar University • Year: 2013</p>
-                <button class="btn btn-free" onclick="downloadDirect('econ_final_2013')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Economics Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('econ_final_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Economics Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('econ_final_814')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Logic Final Exam 2017</h4>
+                    <span class="badge badge-prem">⭐ Premium</span>
+                </div>
+                <p class="exam-meta">With Step-by-Step Proofs</p>
+                <div class="btn-group">
+                    <button class="btn btn-reward" onclick="watchRewardAd('logic_final_2017')">⭐ በነፃ ይክፈቱ (Ad)</button>
+                </div>
             </div>
         </details>
 
         <details class="course-details">
-            <summary>🗺️ Geography</summary>
-            <div class="card">
-                <h4>Geography Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('geography_final')">📥 በነፃ አውርድ (Free)</button>
+            <summary>📊 Economics & Mathematics</summary>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Economics Final Exam 2016</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Full Course Final Evaluation</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('econ_final_2016')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
-            <div class="card">
-                <h4>Geography Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('geography_final_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Geography Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('geography_final_2017')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🌍 Global Trends</summary>
-            <div class="card">
-                <h4>Global Trend Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn btn-free" onclick="downloadDirect('global_trend_2015')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Global Trend Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('global_trend_final_790')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📜 History</summary>
-            <div class="card">
-                <h4>History Final Exam 2015 (Bahirab)</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn btn-free" onclick="downloadDirect('history_final_2015_b')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>History Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('history_final_2016')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>⚖️ Moral & Civics</summary>
-            <div class="card">
-                <h4>Civics Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-free" onclick="downloadDirect('civics_final_2016')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Civics Final Exam 2023</h4>
-                <p>Bahir Dar University • Year: 2023 G.C</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('civics_final_2023')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🦴 Anthropology</summary>
-            <div class="card">
-                <h4>Anthropology Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn btn-free" onclick="downloadDirect('anthro_final_2015')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Anthropology Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('anthro_final_2016')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🤖 Emerging Technologies</summary>
-            <div class="card">
-                <h4>Emerging Technology Final Exam 2014</h4>
-                <p>Bahir Dar University • Year: 2014</p>
-                <button class="btn btn-free" onclick="downloadDirect('emerging_tech_2014')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Emerging Technology Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('emerging_tech_final')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🧠 Psychology & Inclusiveness</summary>
-            <div class="card">
-                <h4>General Psychology Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('psychology_final')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>General Psychology Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('psychology_final_793')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🗣️ Communicative English</summary>
-            <div class="card">
-                <h4>Communication Skills English Final</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('comm_skills_final')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Communication English Skills Two Final</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('comm_english_two_final_406')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>📐 Mathematics</summary>
-            <div class="card">
-                <h4>Applied Mathematics One Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('applied_math_one_final')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Mathematics Final Exam 2016</h4>
-                <p>Bahir Dar University • Year: 2016</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('math_final_2016')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>💼 Entrepreneurship</summary>
-            <div class="card">
-                <h4>Entrepreneurship Final Exam 2015</h4>
-                <p>Bahir Dar University • Year: 2015</p>
-                <button class="btn btn-free" onclick="downloadDirect('entrepreneurship_final_2015')">📥 በነፃ አውርድ (Free)</button>
-            </div>
-            <div class="card">
-                <h4>Entrepreneurship Final Exam 2017</h4>
-                <p>Bahir Dar University • Year: 2017</p>
-                <button class="btn btn-reward" onclick="watchRewardAd('entrepreneurship_final_785')">⭐ ፕሪሚየም ፈተና (በማስታወቂያ)</button>
-            </div>
-        </details>
-
-        <details class="course-details">
-            <summary>🔬 General Physics</summary>
-            <div class="card">
-                <h4>General Physics Final Exam</h4>
-                <p>Bahir Dar University • Freshman</p>
-                <button class="btn btn-free" onclick="downloadDirect('physics_final_224')">📥 በነፃ አውርድ (Free)</button>
+            <div class="exam-card">
+                <div class="exam-header">
+                    <h4 class="exam-title">Applied Mathematics Final</h4>
+                    <span class="badge badge-free">Free</span>
+                </div>
+                <p class="exam-meta">Calculus & Algebra Sections</p>
+                <div class="btn-group">
+                    <button class="btn btn-bot" onclick="sendToBot('applied_math_one_final')">📥 በነፃ አውርድ (Free)</button>
+                </div>
             </div>
         </details>
     </details>
+
+    <!-- IN-APP READER OVERLAY -->
+    <div id="readerView">
+        <div class="reader-header">
+            <h3 class="reader-title" id="readerExamTitle">Exam Reader</h3>
+            <button class="reader-close" onclick="closeInAppReader()">✖ ዝጋ (Close)</button>
+        </div>
+        <div id="readerContent"></div>
+    </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
@@ -628,28 +528,24 @@
         const translations = {
             am: {
                 title: "📚 Bahirab Study Hub",
-                subtitle: "የፈተና ዓይነት ይምረጡ፦",
-                appCat: "📱 Freshman App & Modules",
+                subtitle: "የፈተና ጥያቄዎችንና ማጠቃለያዎችን እዚህ ያንብቡ፦",
+                statExams: "ፈተናዎች",
+                statCourses: "የትምህርት አይነቶች",
                 midCat: "📝 Mid Exams (የአጋማሽ ፈተናዎች)",
                 finalCat: "🎓 Final Exams (የማጠቃለያ ፈተናዎች)",
-                btnFree: "📥 በነፃ አውርድ (Free)",
-                btnReward: "⭐ ፕሪሚየም (በማስታወቂያ)",
                 loading: "ማስታወቂያ በመጫን ላይ...",
-                sent: "ተልኳል! ወደ ቦቱ ይመለሱ...",
-                loadErr: "ማስታወቂያውን መጫን አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
-                openTgAlert: "እባክዎ መተግበሪያውን በቴሌግራም ቦት ውስጥ ባለው በተን ብቻ ይክፈቱት!"
+                loadErr: "ማስታወቂያውን መጫን አልተቻለም።",
+                openTgAlert: "እባክዎ መተግበሪያውን በቴሌግራም ቦት ውስጥ ይክፈቱት!"
             },
             en: {
                 title: "📚 Bahirab Study Hub",
-                subtitle: "Select exam category:",
-                appCat: "📱 Freshman App & Modules",
+                subtitle: "Study and review exam questions directly here:",
+                statExams: "Exams",
+                statCourses: "Courses",
                 midCat: "📝 Mid Exams",
                 finalCat: "🎓 Final Exams",
-                btnFree: "📥 Free Download",
-                btnReward: "⭐ Premium (Watch Ad)",
                 loading: "Loading Ad...",
-                sent: "Sent! Return to bot...",
-                loadErr: "Failed to load the ad. Please try again.",
+                loadErr: "Failed to load the ad.",
                 openTgAlert: "Please open this app from inside the Telegram Bot!"
             }
         };
@@ -669,16 +565,10 @@
             const t = translations[currentLang] || translations.am;
             document.getElementById('hubTitle').innerText = t.title;
             document.getElementById('hubSubtitle').innerText = t.subtitle;
-            document.getElementById('appCatTitle').innerText = t.appCat;
+            document.getElementById('statExams').innerText = t.statExams;
+            document.getElementById('statCourses').innerText = t.statCourses;
             document.getElementById('midCatTitle').innerText = t.midCat;
             document.getElementById('finalCatTitle').innerText = t.finalCat;
-
-            document.querySelectorAll('.btn-free').forEach(btn => {
-                btn.innerText = t.btnFree;
-            });
-            document.querySelectorAll('.btn-reward').forEach(btn => {
-                btn.innerText = t.btnReward;
-            });
         }
 
         window.onload = function() {
@@ -690,28 +580,77 @@
             }
         };
 
-        // 1. ነፃ ማውረጃ ተግባር (Free Download)
-        function downloadDirect(fileKey) {
-            const t = translations[currentLang] || translations.am;
-            const btn = window.event ? window.event.target : null;
-            if (btn) btn.innerText = t.sent;
+        // In-App Content Database
+        const sampleExams = {
+            logic_sample: {
+                title: "Logic & Critical Thinking - Review Questions",
+                questions: [
+                    {
+                        q: "1. Which of the following is a characteristic of a valid deductive argument?",
+                        options: ["A) The premises must be empirically true", "B) If premises are true, conclusion must be true", "C) It deals with probability", "D) It cannot have false premises"],
+                        ans: "Answer: B (If premises are true, conclusion must be true)"
+                    },
+                    {
+                        q: "2. The fallacy of Appeal to Emotion occurs when:",
+                        options: ["A) An argument attacks the person's character", "B) An arguer attempts to win acceptance through pity or fear", "C) The premises assume the truth of conclusion", "D) Evidence is completely omitted"],
+                        ans: "Answer: B (An arguer attempts to win acceptance through pity or fear)"
+                    }
+                ]
+            },
+            econ_sample: {
+                title: "Economics - Core Review Questions",
+                questions: [
+                    {
+                        q: "1. Opportunity cost is best defined as:",
+                        options: ["A) The total financial expenditure", "B) The value of the next best alternative forgone", "C) The variable cost of production", "D) The explicit accounting expenses"],
+                        ans: "Answer: B (The value of the next best alternative forgone)"
+                    },
+                    {
+                        q: "2. When supply decreases while demand remains constant, what happens to equilibrium price and quantity?",
+                        options: ["A) Price rises, Quantity falls", "B) Price falls, Quantity rises", "C) Both Price and Quantity rise", "D) Both Price and Quantity fall"],
+                        ans: "Answer: A (Price rises, Quantity falls)"
+                    }
+                ]
+            }
+        };
 
+        function openInAppReader(key) {
+            const data = sampleExams[key];
+            if (!data) return;
+
+            document.getElementById('readerExamTitle').innerText = data.title;
+            const container = document.getElementById('readerContent');
+            container.innerHTML = "";
+
+            data.questions.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'q-box';
+                let optsHtml = item.options.map(o => `<div class="q-opt">${o}</div>`).join('');
+                box.innerHTML = `<div class="q-title">${item.q}</div>${optsHtml}<div class="q-ans">${item.ans}</div>`;
+                container.appendChild(box);
+            });
+
+            document.getElementById('readerView').style.display = 'block';
+        }
+
+        function closeInAppReader() {
+            document.getElementById('readerView').style.display = 'none';
+        }
+
+        function sendToBot(fileKey) {
             if (tg && tg.initData) {
                 tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
-                setTimeout(() => { tg.close(); }, 800);
             } else {
                 window.location.href = "https://t.me/Bahirabbot?start=" + fileKey;
             }
         }
 
-        // 2. በማስታወቂያ የሚወርድ ፕሪሚየም ተግባር (Rewarded Download)
         let adController = null;
-
         function watchRewardAd(fileKey) {
             const t = translations[currentLang] || translations.am;
             const btn = window.event ? window.event.target : null;
             let originalText = "";
-            
+
             if (btn) {
                 originalText = btn.innerText;
                 btn.innerText = t.loading;
@@ -732,17 +671,18 @@
                     adController = window.Adsgram.init({ blockId: "44295" });
                 }
 
-                adController.show().then((result) => {
-                    if (btn) btn.innerText = t.sent;
-                    tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
-                    setTimeout(() => { tg.close(); }, 800);
-                }).catch((err) => {
+                adController.show().then(() => {
                     if (btn) {
                         btn.innerText = originalText;
                         btn.disabled = false;
                     }
-                    tg.openTelegramLink("https://t.me/Bahirabbot?start=" + fileKey);
-                    setTimeout(() => { tg.close(); }, 800);
+                    sendToBot(fileKey);
+                }).catch(() => {
+                    if (btn) {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }
+                    sendToBot(fileKey);
                 });
             } catch (e) {
                 if (btn) {
