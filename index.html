@@ -266,7 +266,7 @@
             margin-bottom: 30px;
         }
 
-        /* Fullscreen PDF Reader */
+        /* Fullscreen PDF Viewer Styles */
         #pdfView {
             display: none;
             position: fixed;
@@ -274,48 +274,57 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1e293b;
+            background: #0f172a;
             z-index: 10001;
-            overflow-y: auto;
             box-sizing: border-box;
-            padding: 12px;
+            padding: 10px;
         }
         .pdf-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            background: #0f172a;
-            padding: 8px 12px;
+            background: #1e293b;
+            padding: 8px 10px;
             border-radius: 8px;
             color: white;
-            font-size: 13px;
-            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
             box-sizing: border-box;
+            gap: 4px;
         }
         .pdf-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 12px;
+        }
+        .pdf-btn-zoom {
+            background: #475569;
         }
         .pdf-reader-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #334155;
-            border-radius: 12px;
-            padding: 10px;
+            display: block;
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 8px;
+            overflow: auto;
+            height: calc(100vh - 120px);
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+            text-align: center;
         }
         #pdfCanvas {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
+            max-width: none;
             border-radius: 6px;
             background: white;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+            margin: 0 auto;
+            display: inline-block;
         }
     </style>
 </head>
@@ -816,6 +825,13 @@
         <details class="course-details">
             <summary>⚖️ Moral & Civics</summary>
             <div class="card">
+                <h4>Civics Chapter 1 (Full Note)</h4>
+                <p>Bahir Dar University • Complete Note</p>
+                <div class="btn-group">
+                    <button class="btn btn-read" onclick="openPdfViewer('civics_ch1.pdf', '⚖️ Civics Chapter 1')">📖 PDF እዚሁ አንብብ</button>
+                </div>
+            </div>
+            <div class="card">
                 <h4>Civics Final Exam 2016</h4>
                 <p>Bahir Dar University • Year: 2016</p>
                 <div class="btn-group">
@@ -982,7 +998,7 @@
         </div>
     </div>
 
-    <!-- IN-APP PDF.JS VIEWER OVERLAY -->
+    <!-- IN-APP PDF.JS VIEWER OVERLAY (WITH HD ZOOM) -->
     <div id="pdfView">
         <div class="reader-header">
             <h3 class="reader-title" id="pdfViewerTitle" style="color: white;">📖 PDF Reader</h3>
@@ -991,7 +1007,9 @@
 
         <div class="pdf-controls">
             <button class="pdf-btn" onclick="prevPage()">◀️ ቀዳሚ</button>
-            <span>ገጽ፦ <span id="pageNum">1</span> / <span id="pageCount">--</span></span>
+            <button class="pdf-btn pdf-btn-zoom" onclick="zoomOut()">🔍 -</button>
+            <span><span id="pageNum">1</span>/<span id="pageCount">-</span> (<span id="zoomVal">150%</span>)</span>
+            <button class="pdf-btn pdf-btn-zoom" onclick="zoomIn()">🔍 +</button>
             <button class="pdf-btn" onclick="nextPage()">ቀጣይ ▶️</button>
         </div>
 
@@ -1167,13 +1185,14 @@
             }
         }
 
-        /* --- 📄 PDF.JS VIEWER LOGIC --- */
+        /* --- 📄 HD PDF.JS VIEWER WITH RETINA ZOOM LOGIC --- */
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
         let pdfDoc = null;
         let pageNum = 1;
         let pageRendering = false;
         let pageNumPending = null;
+        let userZoomFactor = 1.4; // Default readable zoom scale
         const canvas = document.getElementById('pdfCanvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -1182,6 +1201,7 @@
             document.getElementById('pdfView').style.display = 'block';
 
             pageNum = 1;
+            userZoomFactor = 1.4;
             pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
                 pdfDoc = pdfDoc_;
                 document.getElementById('pageCount').textContent = pdfDoc.numPages;
@@ -1194,13 +1214,21 @@
         function renderPage(num) {
             pageRendering = true;
             pdfDoc.getPage(num).then(function(page) {
-                const containerWidth = document.querySelector('.pdf-reader-container').clientWidth - 10;
+                const container = document.querySelector('.pdf-reader-container');
+                const containerWidth = (container ? container.clientWidth : window.innerWidth) - 24;
                 const unscaledViewport = page.getViewport({ scale: 1 });
-                const scale = containerWidth / unscaledViewport.width;
-                const viewport = page.getViewport({ scale: scale });
+                const baseScale = (containerWidth / unscaledViewport.width) * userZoomFactor;
+                
+                // High-DPI (Retina) Crisp text rendering
+                const dpr = window.devicePixelRatio || 1;
+                const viewport = page.getViewport({ scale: baseScale });
 
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
+                canvas.width = Math.floor(viewport.width * dpr);
+                canvas.height = Math.floor(viewport.height * dpr);
+                canvas.style.width = Math.floor(viewport.width) + "px";
+                canvas.style.height = Math.floor(viewport.height) + "px";
+
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
                 const renderContext = {
                     canvasContext: ctx,
@@ -1218,6 +1246,7 @@
             });
 
             document.getElementById('pageNum').textContent = num;
+            document.getElementById('zoomVal').textContent = Math.round(userZoomFactor * 100) + "%";
         }
 
         function queueRenderPage(num) {
@@ -1226,6 +1255,18 @@
             } else {
                 renderPage(num);
             }
+        }
+
+        function zoomIn() {
+            if (userZoomFactor >= 3.0) return;
+            userZoomFactor += 0.25;
+            queueRenderPage(pageNum);
+        }
+
+        function zoomOut() {
+            if (userZoomFactor <= 0.8) return;
+            userZoomFactor -= 0.25;
+            queueRenderPage(pageNum);
         }
 
         function prevPage() {
