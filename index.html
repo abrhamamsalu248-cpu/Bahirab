@@ -2,7 +2,7 @@
 <html lang="am">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Bahirab Study Hub</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
@@ -191,7 +191,7 @@
             color: white;
         }
 
-        /* Fullscreen Reader */
+        /* Fullscreen Text Reviewer */
         #readerView {
             display: none;
             position: fixed;
@@ -266,63 +266,57 @@
             margin-bottom: 30px;
         }
 
-        /* Fullscreen PDF Viewer Styles (Pinch & Pan Optimized) */
+        /* Fullscreen Continuous Multi-Page Document Reader */
         #pdfView {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0f172a;
+            width: 100vw;
+            height: 100vh;
+            background: #334155;
             z-index: 10001;
             box-sizing: border-box;
-            padding: 10px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
-        .pdf-controls {
+        .pdf-floating-bar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            background: #1e293b;
-            padding: 8px 12px;
-            border-radius: 8px;
-            color: white;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            box-sizing: border-box;
+            z-index: 10002;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
         }
-        .pdf-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        .pdf-reader-container {
+        .pdf-pages-container {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            background: #1e293b;
-            border-radius: 10px;
-            overflow: hidden;
-            height: calc(100vh - 120px);
+            padding: 12px 6px 40px 6px;
+            gap: 12px;
             box-sizing: border-box;
-            touch-action: none; /* Allows smooth pinch & pan gestures */
-            position: relative;
         }
-        #pdfCanvas {
-            max-width: 100%;
-            border-radius: 6px;
+        .pdf-page-canvas {
+            display: block;
+            width: 100% !important;
+            max-width: 650px;
+            height: auto !important;
             background: white;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            transform-origin: center center;
-            transition: transform 0.05s ease-out;
-            cursor: grab;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border-radius: 4px;
+        }
+        .pdf-loading-msg {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 40px;
+            text-align: center;
         }
     </style>
 </head>
@@ -497,7 +491,7 @@
                 <h4>Civics Chapter 1 (Full Note)</h4>
                 <p>Bahir Dar University • Complete Note</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openPdfViewer('civics_ch1.pdf', '⚖️ Civics Chapter 1')">📖 PDF እዚሁ አንብብ</button>
+                    <button class="btn btn-read" onclick="openPdfViewer('civics_ch1.pdf', '⚖️ Civics Chapter 1')">📖 ሙሉ ኖቱን አንብብ</button>
                 </div>
             </div>
             <div class="card">
@@ -826,7 +820,7 @@
                 <h4>Civics Chapter 1 (Full Note)</h4>
                 <p>Bahir Dar University • Complete Note</p>
                 <div class="btn-group">
-                    <button class="btn btn-read" onclick="openPdfViewer('civics_ch1.pdf', '⚖️ Civics Chapter 1')">📖 PDF እዚሁ አንብብ</button>
+                    <button class="btn btn-read" onclick="openPdfViewer('civics_ch1.pdf', '⚖️ Civics Chapter 1')">📖 ሙሉ ኖቱን አንብብ</button>
                 </div>
             </div>
             <div class="card">
@@ -996,21 +990,15 @@
         </div>
     </div>
 
-    <!-- IN-APP PDF.JS VIEWER OVERLAY (PINCH-TO-ZOOM ENABLED) -->
+    <!-- FULLSCREEN CONTINUOUS SCROLL PDF VIEWER -->
     <div id="pdfView">
-        <div class="reader-header">
-            <h3 class="reader-title" id="pdfViewerTitle" style="color: white;">📖 PDF Reader</h3>
+        <div class="pdf-floating-bar">
+            <span id="pdfViewerTitle" style="color: white; font-size: 14px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;">📖 PDF Reader</span>
             <button class="reader-close" onclick="closePdfViewer()">✖ ዝጋ (Close)</button>
         </div>
 
-        <div class="pdf-controls">
-            <button class="pdf-btn" onclick="prevPage()">◀️ ቀዳሚ</button>
-            <span>ገጽ፦ <span id="pageNum">1</span> / <span id="pageCount">--</span></span>
-            <button class="pdf-btn" onclick="nextPage()">ቀጣይ ▶️</button>
-        </div>
-
-        <div class="pdf-reader-container" id="pdfGestureContainer">
-            <canvas id="pdfCanvas"></canvas>
+        <div class="pdf-pages-container" id="pdfPagesList">
+            <div class="pdf-loading-msg" id="pdfLoading">⏳ ፒዲኤፉ በመጫን ላይ ነው...</div>
         </div>
     </div>
 
@@ -1181,170 +1169,58 @@
             }
         }
 
-        /* --- 📄 HD PDF.JS VIEWER WITH SMOOTH PINCH-TO-ZOOM & PAN --- */
+        /* --- 📄 CONTINUOUS FULLSCREEN PDF.JS SCROLL READER --- */
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        let pdfDoc = null;
-        let pageNum = 1;
-        let pageRendering = false;
-        let pageNumPending = null;
-        const canvas = document.getElementById('pdfCanvas');
-        const ctx = canvas ? canvas.getContext('2d') : null;
-        const gestureContainer = document.getElementById('pdfGestureContainer');
-
-        // Gesture state
-        let zoomScale = 1;
-        let panX = 0, panY = 0;
-        let startDist = 0;
-        let initialZoom = 1;
-        let panStart = { x: 0, y: 0 };
-        let lastTapTime = 0;
-
-        function applyCanvasTransform() {
-            if (canvas) {
-                canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomScale})`;
-            }
-        }
-
-        function resetCanvasTransform() {
-            zoomScale = 1;
-            panX = 0;
-            panY = 0;
-            applyCanvasTransform();
-        }
-
-        // Setup touch events for Pinch & Pan
-        if (gestureContainer) {
-            gestureContainer.addEventListener('touchstart', function(e) {
-                if (e.touches.length === 2) {
-                    startDist = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    );
-                    initialZoom = zoomScale;
-                } else if (e.touches.length === 1) {
-                    panStart = { x: e.touches[0].pageX - panX, y: e.touches[0].pageY - panY };
-                }
-            }, { passive: false });
-
-            gestureContainer.addEventListener('touchmove', function(e) {
-                if (e.touches.length === 2) {
-                    e.preventDefault();
-                    const currentDist = Math.hypot(
-                        e.touches[0].pageX - e.touches[1].pageX,
-                        e.touches[0].pageY - e.touches[1].pageY
-                    );
-                    if (startDist > 0) {
-                        zoomScale = Math.min(Math.max(1, initialZoom * (currentDist / startDist)), 4);
-                        applyCanvasTransform();
-                    }
-                } else if (e.touches.length === 1 && zoomScale > 1) {
-                    e.preventDefault();
-                    panX = e.touches[0].pageX - panStart.x;
-                    panY = e.touches[0].pageY - panStart.y;
-                    applyCanvasTransform();
-                }
-            }, { passive: false });
-
-            gestureContainer.addEventListener('touchend', function(e) {
-                if (e.touches.length < 2) {
-                    startDist = 0;
-                }
-                if (zoomScale <= 1) {
-                    resetCanvasTransform();
-                }
-
-                // Double-tap to Zoom in / Reset
-                const now = Date.now();
-                if (now - lastTapTime < 300 && e.touches.length === 0) {
-                    e.preventDefault();
-                    if (zoomScale > 1) {
-                        resetCanvasTransform();
-                    } else {
-                        zoomScale = 2.2;
-                        panX = 0;
-                        panY = 0;
-                        applyCanvasTransform();
-                    }
-                }
-                lastTapTime = now;
-            });
-        }
+        let currentPdfDoc = null;
 
         function openPdfViewer(pdfUrl, title) {
             document.getElementById('pdfViewerTitle').innerText = title || "📖 PDF Reader";
+            const container = document.getElementById('pdfPagesList');
+            container.innerHTML = '<div class="pdf-loading-msg">⏳ ፒዲኤፉ በመጫን ላይ ነው...</div>';
             document.getElementById('pdfView').style.display = 'block';
+            document.getElementById('pdfView').scrollTop = 0;
 
-            pageNum = 1;
-            resetCanvasTransform();
-
-            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
-                pdfDoc = pdfDoc_;
-                document.getElementById('pageCount').textContent = pdfDoc.numPages;
-                renderPage(pageNum);
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc) {
+                currentPdfDoc = pdfDoc;
+                container.innerHTML = ''; // Clear loading spinner
+                
+                // Render all pages continuously one by one
+                for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                    renderContinuousPage(pdfDoc, pageNum, container);
+                }
             }).catch(function(error) {
                 alert("⚠️ PDF መጫን አልተቻለም፦ " + error.message);
+                closePdfViewer();
             });
         }
 
-        function renderPage(num) {
-            pageRendering = true;
-            resetCanvasTransform();
+        function renderContinuousPage(pdfDoc, pageNum, container) {
+            const canvas = document.createElement('canvas');
+            canvas.className = 'pdf-page-canvas';
+            container.appendChild(canvas);
 
-            pdfDoc.getPage(num).then(function(page) {
-                const containerWidth = (gestureContainer ? gestureContainer.clientWidth : window.innerWidth) - 20;
-                const unscaledViewport = page.getViewport({ scale: 1 });
-                const baseScale = containerWidth / unscaledViewport.width;
+            pdfDoc.getPage(pageNum).then(function(page) {
+                const ctx = canvas.getContext('2d');
                 
-                // Crisp 2.5x Hi-DPI texture rendering for sharp pinch zoom
-                const renderScale = baseScale * 2.5;
-                const viewport = page.getViewport({ scale: renderScale });
+                // Render at high-density (2x device ratio) for crystal clear readable text
+                const scale = 2.0;
+                const viewport = page.getViewport({ scale: scale });
 
-                canvas.width = Math.floor(viewport.width);
-                canvas.height = Math.floor(viewport.height);
-                canvas.style.width = Math.floor(baseScale * unscaledViewport.width) + "px";
-                canvas.style.height = Math.floor(baseScale * unscaledViewport.height) + "px";
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
 
                 const renderContext = {
                     canvasContext: ctx,
                     viewport: viewport
                 };
-                const renderTask = page.render(renderContext);
-
-                renderTask.promise.then(function() {
-                    pageRendering = false;
-                    if (pageNumPending !== null) {
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
-                });
+                page.render(renderContext);
             });
-
-            document.getElementById('pageNum').textContent = num;
-        }
-
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
-        }
-
-        function prevPage() {
-            if (pageNum <= 1) return;
-            pageNum--;
-            queueRenderPage(pageNum);
-        }
-
-        function nextPage() {
-            if (pageNum >= pdfDoc.numPages) return;
-            pageNum++;
-            queueRenderPage(pageNum);
         }
 
         function closePdfViewer() {
             document.getElementById('pdfView').style.display = 'none';
+            document.getElementById('pdfPagesList').innerHTML = '';
         }
     </script>
 </body>
