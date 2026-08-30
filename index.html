@@ -8,8 +8,6 @@
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <!-- Mozilla PDF.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- Mobile Pan & Pinch-Zoom Engine -->
-    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
     <style>
         :root {
             --primary: #0088cc;
@@ -268,7 +266,7 @@
             margin-bottom: 30px;
         }
 
-        /* Fullscreen Pinch-Zoom PDF Reader Container */
+        /* Fullscreen Native Smooth PDF Reader */
         #pdfView {
             display: none;
             position: fixed;
@@ -276,7 +274,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #1e293b;
+            background: #0f172a;
             z-index: 10001;
             box-sizing: border-box;
             overflow: hidden;
@@ -286,7 +284,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(15, 23, 42, 0.95);
             padding: 10px 14px;
             display: flex;
             justify-content: space-between;
@@ -295,14 +293,14 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             backdrop-filter: blur(6px);
         }
-        .pdf-viewport {
+        .pdf-scroll-area {
             width: 100%;
             height: 100%;
             overflow-y: auto;
-            overflow-x: hidden;
+            overflow-x: auto;
             box-sizing: border-box;
             padding-top: 55px;
-            padding-bottom: 30px;
+            padding-bottom: 40px;
             -webkit-overflow-scrolling: touch;
         }
         .pdf-pages-wrapper {
@@ -311,13 +309,15 @@
             align-items: center;
             gap: 12px;
             padding: 10px 4px;
-            transform-origin: center top;
-            touch-action: none;
+            width: 100%;
+            min-width: 100%;
+            box-sizing: border-box;
+            transition: width 0.1s ease-out;
         }
         .pdf-page-canvas {
             display: block;
             width: 96% !important;
-            max-width: 600px;
+            max-width: 650px;
             height: auto !important;
             background: white;
             box-shadow: 0 4px 14px rgba(0,0,0,0.4);
@@ -1002,14 +1002,14 @@
         </div>
     </div>
 
-    <!-- FULLSCREEN PINCH-TO-ZOOM PDF VIEWER -->
+    <!-- FULLSCREEN NATIVE SMOOTH PDF VIEWER -->
     <div id="pdfView">
         <div class="pdf-floating-bar">
             <span id="pdfViewerTitle" style="color: white; font-size: 14px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;">📖 PDF Reader</span>
             <button class="reader-close" onclick="closePdfViewer()">✖ ዝጋ (Close)</button>
         </div>
 
-        <div class="pdf-viewport" id="pdfScrollContainer">
+        <div class="pdf-scroll-area" id="pdfScrollArea">
             <div class="pdf-pages-wrapper" id="pdfPagesWrapper">
                 <div class="pdf-loading-msg" id="pdfLoading">⏳ ፒዲኤፉ በመጫን ላይ ነው...</div>
             </div>
@@ -1183,32 +1183,78 @@
             }
         }
 
-        /* --- 📄 SMOOTH PINCH-TO-ZOOM ENGINE --- */
+        /* --- 📄 SMOOTH NATIVE SCROLL & PINCH-ZOOM LOGIC --- */
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        let pzInstance = null;
+        let currentZoom = 100;
+        let initialDist = 0;
+        let baseZoom = 100;
+
+        const scrollArea = document.getElementById('pdfScrollArea');
+        const pagesWrapper = document.getElementById('pdfPagesWrapper');
+
+        // Natural Pinch-to-Zoom without blocking 1-finger vertical scroll
+        if (scrollArea && pagesWrapper) {
+            scrollArea.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    initialDist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    baseZoom = currentZoom;
+                }
+            }, { passive: true });
+
+            scrollArea.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2 && initialDist > 0) {
+                    e.preventDefault(); // Only intercept when 2 fingers pinch
+                    const dist = Math.hypot(
+                        e.touches[0].pageX - e.touches[1].pageX,
+                        e.touches[0].pageY - e.touches[1].pageY
+                    );
+                    const factor = dist / initialDist;
+                    currentZoom = Math.min(Math.max(100, Math.round(baseZoom * factor)), 300);
+                    pagesWrapper.style.width = `${currentZoom}%`;
+                }
+            }, { passive: false });
+
+            scrollArea.addEventListener('touchend', function(e) {
+                if (e.touches.length < 2) {
+                    initialDist = 0;
+                }
+            });
+
+            // Quick Double-Tap Zoom
+            let lastTapTime = 0;
+            scrollArea.addEventListener('touchend', function(e) {
+                if (e.touches.length === 0) {
+                    const now = Date.now();
+                    if (now - lastTapTime < 300) {
+                        e.preventDefault();
+                        currentZoom = currentZoom > 120 ? 100 : 180;
+                        pagesWrapper.style.width = `${currentZoom}%`;
+                    }
+                    lastTapTime = now;
+                }
+            });
+        }
 
         function openPdfViewer(pdfUrl, title) {
             document.getElementById('pdfViewerTitle').innerText = title || "📖 PDF Reader";
-            const wrapper = document.getElementById('pdfPagesWrapper');
-            wrapper.innerHTML = '<div class="pdf-loading-msg">⏳ ፒዲኤፉ በመጫን ላይ ነው...</div>';
+            pagesWrapper.innerHTML = '<div class="pdf-loading-msg">⏳ ፒዲኤፉ በመጫን ላይ ነው...</div>';
             document.getElementById('pdfView').style.display = 'block';
-            document.getElementById('pdfScrollContainer').scrollTop = 0;
-
-            // Destroy previous Panzoom if exists
-            if (pzInstance) {
-                pzInstance.destroy();
-                pzInstance = null;
-            }
+            scrollArea.scrollTop = 0;
+            currentZoom = 100;
+            pagesWrapper.style.width = '100%';
 
             pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc) {
-                wrapper.innerHTML = ''; // Clear loading message
+                pagesWrapper.innerHTML = '';
                 
-                // Render pages continuously with 2.2x crisp DPI
+                // Render crisp pages
                 for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
                     const canvas = document.createElement('canvas');
                     canvas.className = 'pdf-page-canvas';
-                    wrapper.appendChild(canvas);
+                    pagesWrapper.appendChild(canvas);
 
                     pdfDoc.getPage(pageNum).then(function(page) {
                         const ctx = canvas.getContext('2d');
@@ -1223,30 +1269,6 @@
                         });
                     });
                 }
-
-                // Initialize Mobile Panzoom for effortless 2-finger zoom & pan
-                setTimeout(() => {
-                    pzInstance = Panzoom(wrapper, {
-                        maxScale: 4.5,
-                        minScale: 1,
-                        contain: 'outside',
-                        startScale: 1,
-                        touchAction: 'pan-y'
-                    });
-
-                    // Enable Double Tap to Zoom in/out
-                    wrapper.addEventListener('dblclick', (e) => {
-                        if (pzInstance.getScale() > 1.2) {
-                            pzInstance.reset();
-                        } else {
-                            pzInstance.zoomToPoint(2.5, { clientX: e.clientX, clientY: e.clientY });
-                        }
-                    });
-
-                    // Direct Touch Gesture attachment
-                    wrapper.parentElement.addEventListener('wheel', pzInstance.zoomWithWheel);
-                }, 300);
-
             }).catch(function(error) {
                 alert("⚠️ PDF መጫን አልተቻለም፦ " + error.message);
                 closePdfViewer();
@@ -1254,12 +1276,8 @@
         }
 
         function closePdfViewer() {
-            if (pzInstance) {
-                pzInstance.destroy();
-                pzInstance = null;
-            }
             document.getElementById('pdfView').style.display = 'none';
-            document.getElementById('pdfPagesWrapper').innerHTML = '';
+            pagesWrapper.innerHTML = '';
         }
     </script>
 </body>
